@@ -1,7 +1,5 @@
 'use strict';
 
-module.exports = BaseModel;
-
 function BaseModel(doc) {
     this.doc = doc
 }
@@ -17,3 +15,5 @@ BaseModel.prototype.$destroy = function() {
         }
     }
 };
+
+module.exports = BaseModel;
