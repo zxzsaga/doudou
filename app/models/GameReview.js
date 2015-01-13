@@ -1,6 +1,6 @@
 'use strict';
 
-var GameReviewSchema = new mongoose.Schema(
+var gameReviewSchema = new mongoose.Schema(
     {
         gameId: ObjectId,
         reviewerId: ObjectId,
@@ -10,6 +10,6 @@ var GameReviewSchema = new mongoose.Schema(
     { collection: 'GameReview' }
 );
 
-var GameReview = mongoose.model('GameReview', GameReviewSchema);
+var GameReview = mongoose.model('GameReview', gameReviewSchema);
 
 module.exports = GameReview;

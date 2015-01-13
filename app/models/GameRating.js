@@ -1,6 +1,6 @@
 'use strict';
 
-var GameRatingSchema = new mongoose.Schema(
+var gameRatingSchema = new mongoose.Schema(
     {
         gameId: ObjectId,
         raterId: ObjectId,
@@ -17,6 +17,6 @@ var GameRatingSchema = new mongoose.Schema(
     { collection: 'GameRating' }
 );
 
-var GameRating = mongoose.model('GameRating', GameRatingSchema);
+var GameRating = mongoose.model('GameRating', gameRatingSchema);
 
 module.exports = GameRating;

@@ -1,18 +1,17 @@
 'use strict';
 
-var GameSchema = new mongoose.Schema(
-    {
-        name: String,
-        platform: String,
-        tag: Array,
-        coverUrl: String,
-        releaseData: Date,
-        developer: String,
-        publisher: String
-    },
-    { collection: 'Game' }
-);
+var modelUtil = require(appModules.util.modelUtil);
 
-var Game = mongoose.model('Game', GameSchema);
+var fieldsDefine = {
+    name: String,
+    platform: String,
+    tag: Array,
+    coverUrl: String,
+    releaseData: Date,
+    developer: String,
+    publisher: String
+};
+var Game = modelUtil.buildModel('Game', fieldsDefine, database.doudou);
 
 module.exports = Game;
+

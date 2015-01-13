@@ -1,6 +1,6 @@
 'use strict';
 
-var UserSchema = new mongoose.Schema(
+var userSchema = new mongoose.Schema(
     {
         name: String,
         pwd: String

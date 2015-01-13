@@ -1,6 +1,6 @@
 'use strict';
 
-function BaseModel(doc) {
+function BaseModel(fieldsDefine, database, collectionName) {
     this.doc = doc
 }
 
