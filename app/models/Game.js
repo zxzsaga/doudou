@@ -10,7 +10,7 @@ var GameSchema = new mongoose.Schema(
         developer: String,
         publisher: String
     },
-    { collection: 'Game'}
+    { collection: 'Game' }
 );
 
 var Game = mongoose.model('Game', GameSchema);
