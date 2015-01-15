@@ -3,15 +3,17 @@
 var modelUtil = require(appModules.util.modelUtil);
 
 var fieldsDefine = {
-    name: String,
+    name: {
+        type: String,
+        required: true
+    },
     platform: String,
     tag: Array,
     coverUrl: String,
-    releaseData: Date,
+    releaseDate: Date,
     developer: String,
-    publisher: String
+    description: String,
 };
 var Game = modelUtil.buildModel('Game', fieldsDefine, database.doudou);
 
 module.exports = Game;
-
