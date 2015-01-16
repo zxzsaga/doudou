@@ -1,5 +1,10 @@
 extend ../layout
 
+append head
+  link(rel='stylesheet', href='/css/jquery.Jcrop.min.css')
+  script(src='/js/jquery.Jcrop.min.js')
+  script(src='/js/game/new.js')
+
 append body
   .container
     // h1 创建新条目
@@ -31,8 +36,16 @@ append body
             textarea.form-control(name='description', rows='5')
         .form-group
           label.control-label.col-lg-2(for='cover') 图标
-          .col-lg-4
-            input#cover.fileUpload(type='file')
+          .col-lg-8
+            p.help-block 可选，请不要上传带有水印的图标。
+            .row
+              .col-lg-4
+                img#cover-img(alt='cover-img', style='width: 128px')
+              .col-lg-8
+                .preview-panel
+                  .preview-container(style='width: 128px; overflow: hidden')
+                    img#cover-img-final(alt='cover-img-final', style='width: 128px')
+            input#cover.imgUpload(type='file')
         .form-group
           .col-lg-offset-2.col-lg-4
             button.btn.btn-primary(type='submit') 好了，提交

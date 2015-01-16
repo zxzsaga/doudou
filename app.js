@@ -96,17 +96,19 @@ app.post('/game/create', function(req, res) {
     }
     res.send('ok');
 });
-
-console.log(global);
-
-var form = new multiparty.Form({ uploadDir: publicPath + '/upload' });
-app.post('/file/upload', function(req, res) {
+app.post('/img/upload', function(req, res) {
+    var form = new multiparty.Form({ uploadDir: publicPath + '/upload' });
     form.parse(req, function(err, fields, files) {
         if (err) {
-            console.log(err);
+            logger.error(err);
+            res.send({ code: -1, error: 'form parse error' });
+            return;
         }
-        console.log('files: ');
-        console.log(files);
-        res.send('ok');
+        var filePath;
+        for (var key in files) {
+            filePath = files[key][0] && files[key][0].path;
+        }
+        filePath = filePath.slice(publicPath.length);
+        res.send({ code: 0, imgUrl: filePath });
     });
 });
