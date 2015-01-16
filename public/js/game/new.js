@@ -48,7 +48,7 @@ function listenImgUploadChange() {
                 onChange: updatePreview,
                 onSelect: updatePreview
             }, function() {
-                $previewContainer.appendTo($previewPanel);
+                // $previewContainer.appendTo($previewPanel);
             });
         }
 
@@ -63,7 +63,6 @@ function listenImgUploadChange() {
                   w:
               }
             */
-
             $previewImgWidth   = $('#' + id + '-img').width();
             $previewImgHeight  = $('#' + id + '-img').height();
 
