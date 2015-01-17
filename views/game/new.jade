@@ -7,16 +7,16 @@ append head
 
 append body
   .container
-    // h1 创建新条目
+    h1 创建新条目
     .col-lg-8
       p 请认真填写以下描述，如创建成功，以下描述会直接展示在新条目的页面上。
-      form.form-horizontal(action='/game/create', method='post', enctype='multipart/form-data', role='form')
+      form.form-horizontal(action='/game/create', method='post', role='form')
         .form-group
           label.control-label.col-lg-2(for='platform') 平台
           .col-lg-3
             select.form-control
               each platform in platforms
-                option #{ platform }
+                option(value=platform) #{ platform }
         .form-group
           label.control-label.col-lg-2(for='name') 名称
           .col-lg-4
@@ -46,6 +46,11 @@ append body
                   .preview-container(style='width: 128px; overflow: hidden')
                     img#cover-img-final(alt='cover-img-final', style='width: 128px')
             input#cover.imgUpload(type='file')
+        input#imgUrl(name='imgUrl', type='hidden')
+        input#x1(name='x1', type='hidden')
+        input#y1(name='y1', type='hidden')
+        input#x2(name='x2', type='hidden')
+        input#y2(name='y2', type='hidden')
         .form-group
           .col-lg-offset-2.col-lg-4
             button.btn.btn-primary(type='submit') 好了，提交

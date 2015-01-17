@@ -7,6 +7,7 @@ var util = require('util');
 // 第三方库
 var express    = require('express'), app = express();
 var glob       = require('glob');
+var im         = require('imagemagick');
 var log4js     = require('log4js'), logger = log4js.getLogger();
 var mongoose   = require('mongoose');
 var multiparty = require('multiparty');
@@ -94,6 +95,13 @@ app.post('/game/create', function(req, res) {
     for (var i in gameFields) {
         gameParams[i] = req.param(i);
     }
+    var coverKeys = [ 'imgUrl', 'x1', 'y1', 'x2', 'y2' ];
+    var coverParams = {};
+    coverKeys.forEach(function(key) {
+        coverParams[key] = req.param(key);
+    });
+    logger.debug(gameParams);
+    logger.debug(coverParams);
     res.send('ok');
 });
 app.post('/img/upload', function(req, res) {
@@ -107,6 +115,7 @@ app.post('/img/upload', function(req, res) {
         var filePath;
         for (var key in files) {
             filePath = files[key][0] && files[key][0].path;
+            break;
         }
         filePath = filePath.slice(publicPath.length);
         res.send({ code: 0, imgUrl: filePath });

@@ -38,7 +38,7 @@ function listenImgUploadChange() {
             }
             $('#' + id + '-img').attr('src', resp.imgUrl);
             $('#' + id + '-img-final').attr('src', resp.imgUrl);
-
+            $('#imgUrl').val(resp.imgUrl);
             // 这里应该等待所有图片加载完成，偷了个懒
             bindJcrop();
         }
@@ -78,6 +78,12 @@ function listenImgUploadChange() {
                     marginLeft: '-' + Math.round(widthRatio * cropInfo.x) + 'px',
                     marginTop: '-' + Math.round(widthRatio * cropInfo.y) + 'px'
                 });
+                $('#x1').val(cropInfo.x);
+                $('#y1').val(cropInfo.y);
+                $('#x2').val(cropInfo.x2);
+                $('#y2').val(cropInfo.y2);
+                $('#w').val(cropInfo.w);
+                $('#h').val(cropInfo.h);
             }
         }
     });

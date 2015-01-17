@@ -1,0 +1,33 @@
+{
+  "name": "doudou",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zxzsaga/doudou.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zxzsaga/doudou/issues"
+  },
+  "homepage": "https://github.com/zxzsaga/doudou",
+  "dependencies": {
+    "body-parser": "^1.10.1",
+    "cookie-parser": "^1.3.3",
+    "express": "^4.11.0",
+    "express-session": "^1.10.1",
+    "glob": "^4.3.5",
+    "imagemagick": "^0.1.3",
+    "jade": "^1.9.0",
+    "log4js": "^0.6.22",
+    "method-override": "^2.3.1",
+    "mongoose": "^3.8.21",
+    "multiparty": "^4.1.0",
+    "underscore": "^1.7.0"
+  }
+}
