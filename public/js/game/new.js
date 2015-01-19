@@ -17,6 +17,9 @@ function listenImgUploadChange() {
         var $previewImgWidth;
         var $previewImgHeight;
 
+        var jcropApi;
+        var aspectRatio = 2/3;
+
         sendRequest();
 
         function sendRequest() {
@@ -46,9 +49,11 @@ function listenImgUploadChange() {
         function bindJcrop() {
             $('#' + id + '-img').Jcrop({
                 onChange: updatePreview,
-                onSelect: updatePreview
+                onSelect: updatePreview,
+                aspectRatio: aspectRatio
             }, function() {
                 // $previewContainer.appendTo($previewPanel);
+                jcropApi = this;
             });
         }
 

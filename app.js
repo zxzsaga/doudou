@@ -100,9 +100,26 @@ app.post('/game/create', function(req, res) {
     coverKeys.forEach(function(key) {
         coverParams[key] = req.param(key);
     });
-    logger.debug(gameParams);
-    logger.debug(coverParams);
-    res.send('ok');
+
+    var cropWidth = Math.round(coverParams.x2 - coverParams.x1);
+    var cropHeight = Math.round(coverParams.y2 - coverParams.y1);
+    var desImgPath = publicPath + '/img/game/cover/' + gameParams.platform + '-' + gameParams.name + '.png';
+
+    var imParam = [
+        publicPath + coverParams.imgUrl,
+        '-gravity', 'northwest',
+        '-crop', cropWidth + 'x' + cropHeight + '+' + coverParams.x1 + '+' + coverParams.y1,
+        '-resize', '128x192',
+        desImgPath
+    ];
+
+    im.convert(imParam, function(err, stdout) {
+        if (err) {
+            res.send('im convert error');
+            return;
+        }
+        res.send('ok');
+    });
 });
 app.post('/img/upload', function(req, res) {
     var form = new multiparty.Form({ uploadDir: publicPath + '/upload' });
