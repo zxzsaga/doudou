@@ -14,7 +14,7 @@ append body
         .form-group
           label.control-label.col-lg-2(for='platform') 平台
           .col-lg-3
-            select.form-control
+            select.form-control(name='platform')
               each platform in platforms
                 option(value=platform) #{ platform }
         .form-group
@@ -25,7 +25,7 @@ append body
           label.control-label.col-lg-2(for='developer') 开发者
           .col-lg-4
             input#developer.form-control(name='developer', type='text', placeholder='选填')
-        .form-group
+        // .form-group
           label.control-label.col-lg-2(for='releaseDate') 发行日期
           .col-lg-4
             input#releaseDate.form-control(name='releaseDate', type='text', placeholder='选填')
@@ -37,14 +37,21 @@ append body
         .form-group
           label.control-label.col-lg-2(for='cover') 图标
           .col-lg-8
-            p.help-block 可选，请不要上传带有水印的图标。
+            p.help-block 请不要上传带有水印的图标。推荐尺寸 128x192
             .row
-              .col-lg-4
+              .col-lg-5
                 img#cover-img(alt='cover-img', style='width: 128px')
-              .col-lg-8
+              .col-lg-7
                 .preview-panel
                   .preview-container(style='width: 128px; overflow: hidden')
                     img#cover-img-final(alt='cover-img-final', style='width: 128px')
+                .row
+                  .col-lg-4
+                    input#width.form-control(type='text', disabled)
+                  .col-lg-1
+                    p x
+                  .col-lg-4
+                    input#height.form-control(type='text', disabled)
             input#cover.imgUpload(type='file')
         input#imgUrl(name='imgUrl', type='hidden')
         input#x1(name='x1', type='hidden')

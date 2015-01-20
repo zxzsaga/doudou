@@ -90,36 +90,82 @@ app.get('/game/new', function(req, res) {
 
 // POST controller
 app.post('/game/create', function(req, res) {
+    // 游戏基本信息
     var gameParams = {};
     var gameFields = Game.getFieldsDefine();
     for (var i in gameFields) {
         gameParams[i] = req.param(i);
     }
+    // 封面裁剪信息
     var coverKeys = [ 'imgUrl', 'x1', 'y1', 'x2', 'y2' ];
     var coverParams = {};
     coverKeys.forEach(function(key) {
         coverParams[key] = req.param(key);
     });
 
-    var cropWidth = Math.round(coverParams.x2 - coverParams.x1);
-    var cropHeight = Math.round(coverParams.y2 - coverParams.y1);
-    var desImgPath = publicPath + '/img/game/cover/' + gameParams.platform + '-' + gameParams.name + '.png';
+    if (coverParams.x1 !== undefined) {
+        handleCover(addGame);
+    } else {
+        addGame();
+    }
 
-    var imParam = [
-        publicPath + coverParams.imgUrl,
-        '-gravity', 'northwest',
-        '-crop', cropWidth + 'x' + cropHeight + '+' + coverParams.x1 + '+' + coverParams.y1,
-        '-resize', '128x192',
-        desImgPath
-    ];
+    function handleCover(cb) {
+        im.identify(publicPath + coverParams.imgUrl, function(err, features) {
+            if (err) {
+                logger.error(err);
+                res.send('im identify error');
+                return;
+            }
+            // console.log(features); { format: 'JPEG', width: 3904, height: 2622, depth: 8 }
+            var scale = features.width / 128;
 
-    im.convert(imParam, function(err, stdout) {
-        if (err) {
-            res.send('im convert error');
+            var cropWidth = Math.round(coverParams.x2 - coverParams.x1);
+            var cropHeight = Math.round(coverParams.y2 - coverParams.y1);
+            var desImgPath = 'img/game/cover/' + gameParams.platform + '-' + gameParams.name + '.png';
+
+            var imParam = [
+                publicPath + coverParams.imgUrl,
+                '-gravity', 'northwest',
+                '-crop', cropWidth * scale + 'x' + cropHeight * scale + '+' + coverParams.x1 * scale + '+' + coverParams.y1 * scale,
+                '-resize', 128,
+                publicPath + '/' + desImgPath
+            ];
+
+            im.convert(imParam, function(err, stdout) {
+                if (err) {
+                    logger.error(err);
+                    res.send('im convert error');
+                    return;
+                }
+                gameParams.coverUrl = desImgPath;
+                fs.rename(
+                    publicPath + coverParams.imgUrl,
+                    publicPath + '/img/game/album/' + gameParams.platform + '-' + gameParams.name + '-cover-origin.png',
+                    function(err) {
+                        if (err) {
+                            logger.error(err);
+                            res.send('fs.rename error');
+                            return;
+                        }
+                        cb();
+                    }
+                );
+            });
+        });
+    }
+
+    function addGame() {
+        var game = new Game(gameParams);
+        game.save(function(err, game) {
+            if (err) {
+                logger.error(err);
+                res.send('game save error');
+                return;
+            }
+            res.send('ok');
             return;
-        }
-        res.send('ok');
-    });
+        });
+    }
 });
 app.post('/img/upload', function(req, res) {
     var form = new multiparty.Form({ uploadDir: publicPath + '/upload' });

@@ -1,4 +1,7 @@
 $(document).ready(function() {
+    $('#width').val($('.preview-container').width());
+    $('#height').val($('.preview-container').height());
+    
     listenImgUploadChange();
 });
 
@@ -18,7 +21,6 @@ function listenImgUploadChange() {
         var $previewImgHeight;
 
         var jcropApi;
-        var aspectRatio = 2/3;
 
         sendRequest();
 
@@ -42,6 +44,8 @@ function listenImgUploadChange() {
             $('#' + id + '-img').attr('src', resp.imgUrl);
             $('#' + id + '-img-final').attr('src', resp.imgUrl);
             $('#imgUrl').val(resp.imgUrl);
+            $('#width').val($('.preview-container').width());
+            $('#height').val($('.preview-container').height());
             // 这里应该等待所有图片加载完成，偷了个懒
             bindJcrop();
         }
@@ -49,8 +53,7 @@ function listenImgUploadChange() {
         function bindJcrop() {
             $('#' + id + '-img').Jcrop({
                 onChange: updatePreview,
-                onSelect: updatePreview,
-                aspectRatio: aspectRatio
+                onSelect: updatePreview
             }, function() {
                 // $previewContainer.appendTo($previewPanel);
                 jcropApi = this;
@@ -89,6 +92,8 @@ function listenImgUploadChange() {
                 $('#y2').val(cropInfo.y2);
                 $('#w').val(cropInfo.w);
                 $('#h').val(cropInfo.h);
+                $('#width').val($('.preview-container').width());
+                $('#height').val($('.preview-container').height());
             }
         }
     });

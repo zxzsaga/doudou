@@ -10,7 +10,7 @@ var fieldsDefine = {
     platform: String,
     tag: Array,
     coverUrl: String,
-    releaseDate: Date,
+    // releaseDate: Date,
     developer: String,
     description: String,
 };
