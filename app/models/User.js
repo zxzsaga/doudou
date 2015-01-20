@@ -1,9 +1,21 @@
 'use strict';
 
-var userSchema = new mongoose.Schema(
-    {
-        name: String,
-        pwd: String
+var modelUtil = require(appModules.util.modelUtil);
+
+var fieldsDefine = {
+    name: {
+        type: String,
+        required: true
     },
-    { collection: 'User' }
-);
+    pwd: {
+        type: String,
+        required: true
+    },
+    registeredAt: {
+        type: Date,
+        default: Date.now()
+    }
+};
+var User = modelUtil.buildModel('User', fieldsDefine, database.doudou);
+
+module.exports = User;

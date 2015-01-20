@@ -49,6 +49,7 @@ var appModules = {};
 var rootPath = path.join(__dirname);
 var moduleMaps = {
     'app'         : path.join(rootPath, 'app', '*.js'),
+    'controllers' : path.join(rootPath, 'app', 'controllers', '*.js'),
     'models'      : path.join(rootPath, 'app', 'models', '*.js'),
     'util'        : path.join(rootPath, 'app', 'util', '*.js')
 };
