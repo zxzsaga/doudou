@@ -74,14 +74,115 @@ global.Constants = require(appModules.app.Constants);
 
 // 自定义模块加载
 var Game = require(appModules.models.Game);
+var User = require(appModules.models.User);
 
-// 自定义方法
-function getRequiredFields(){}
 
-// GET controller
+
+// 登陆相关
 app.get('/', function(req, res) {
-    res.render('index.jade');
+    if (!req.session.user) {
+        res.render('login.jade');
+        return;
+    }
+    Game.find().limit(10).exec(function(err, games) {
+        if (err) {
+            logger.error(err);
+            res.send('find game error');
+            return;
+        }
+        res.render('index.jade', { games: games });
+    });
 });
+app.get('/login', function(req, res) {
+    res.render('login.jade');
+});
+app.post('/login', function(req, res) {
+    var userParams = {
+        name: req.param('name'),
+        pwd: req.param('pwd')
+    };
+    User.findOne(userParams, function(err, user) {
+        if (err) {
+            logger.error(err);
+            res.send('find user error');
+            return;
+        }
+        if (!user) {
+            res.render('login.jade', { error: 'Wrong username or password.' });
+        } else {
+            req.session.user = {
+                id: user.id,
+                name: user.name
+            }
+            res.redirect('/');
+        }
+    });
+});
+app.get('/logout', function(req, res) {
+    req.session.destroy(function(err) {
+        if (err) {
+            logger.error(err);
+            res.send('logout error');
+            return;
+        }
+        res.redirect('/');
+    })
+});
+app.get('/register', function(req, res) {
+    res.render('register.jade');
+});
+app.post('/register', function(req, res) {
+    var userParams = {
+        name: req.param('name'),
+        pwd: req.param('pwd')
+    };
+    User.findOne({ name: userParams.name }, function(err, user) {
+        if (err) {
+            logger.error(err);
+            res.send('find user error');
+            return;
+        }
+
+        if (user) {
+            res.render('register.jade', { error: 'Username already exist.' });
+            return;
+        }
+
+        User.getMaxId(function(err, maxId) {
+            if (err) {
+                logger.error(err);
+                res.send('get user max id error');
+                return;
+            }
+
+            var userId = maxId ? maxId + 1 : 100000;
+            userParams._id = userId;
+            var user = new User(userParams);
+            user.save(function(err, user) {
+                if (err) {
+                    logger.error(err);
+                    res.send('game save error');
+                    return;
+                }
+                req.session.user = {
+                    id: user._id,
+                    name: user.name
+                };
+                res.redirect('/');
+            });
+        });
+    });
+});
+
+// session filter
+app.use(function (req, res, next) {
+    if (!req.session.user) {
+        res.redirect('/');
+        return;
+    }
+    next();
+});
+
 app.get('/game/new', function(req, res) {
     var params = {
         platforms: Constants.GAME.PLATFORM
@@ -89,7 +190,6 @@ app.get('/game/new', function(req, res) {
     res.render('game/new.jade', params);
 });
 
-// POST controller
 app.post('/game/create', function(req, res) {
     // 游戏基本信息
     var gameParams = {};
@@ -97,6 +197,9 @@ app.post('/game/create', function(req, res) {
     for (var i in gameFields) {
         gameParams[i] = req.param(i);
     }
+    gameParams.addedBy = req.session.user.id;
+    gameParams.addedAt = Date.now();
+
     // 封面裁剪信息
     var coverKeys = [ 'imgUrl', 'x1', 'y1', 'x2', 'y2' ];
     var coverParams = {};
@@ -104,11 +207,24 @@ app.post('/game/create', function(req, res) {
         coverParams[key] = req.param(key);
     });
 
-    if (coverParams.x1 !== undefined) {
-        handleCover(addGame);
-    } else {
-        addGame();
-    }
+    Game.findOne({ name: gameParams.name }, function(err, game) {
+        if (err) {
+            logger.error(err);
+            res.send('find game error');
+            return;
+        }
+
+        if (game) {
+            res.send('This game is already exist');
+            return;
+        }
+
+        if (coverParams.x1 !== undefined) {
+            handleCover(addGame);
+        } else {
+            addGame();
+        }
+    });
 
     function handleCover(cb) {
         im.identify(publicPath + coverParams.imgUrl, function(err, features) {
@@ -168,6 +284,7 @@ app.post('/game/create', function(req, res) {
         });
     }
 });
+
 app.post('/img/upload', function(req, res) {
     var form = new multiparty.Form({ uploadDir: publicPath + '/upload' });
     form.parse(req, function(err, fields, files) {
@@ -183,5 +300,20 @@ app.post('/img/upload', function(req, res) {
         }
         filePath = filePath.slice(publicPath.length);
         res.send({ code: 0, imgUrl: filePath });
+    });
+});
+
+app.get('/game/main/:id', function(req, res) {
+    res.render('game/main.jade');
+});
+
+app.get('/maxUserId', function(req, res) {
+    User.getMaxId(function(err, maxId) {
+        if (err) {
+            logger.error(err);
+            res.send('get max user id error');
+            return;
+        }
+        res.send(maxId || 'null');
     });
 });

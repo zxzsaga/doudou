@@ -9,7 +9,8 @@ var Constants = {
             'PSP',
             'Wii',
             'FC',
-            'SFC'
+            'SFC',
+            'Mobile'
         ]
     }
 };

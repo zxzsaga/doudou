@@ -3,6 +3,10 @@
 var modelUtil = require(appModules.util.modelUtil);
 
 var fieldsDefine = {
+    _id: {
+        type: Number,
+        required: true
+    },
     name: {
         type: String,
         required: true
@@ -12,7 +16,7 @@ var fieldsDefine = {
         required: true
     },
     registeredAt: {
-        type: Date,
+        type: Number,
         default: Date.now()
     }
 };

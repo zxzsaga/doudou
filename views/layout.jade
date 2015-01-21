@@ -3,10 +3,10 @@ html
   head
     title doudou
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
-    link(rel='stylesheet', href='/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/css/lib/bootstrap.min.css')
     link(rel='stylesheet', href='/css/doudou.css')
-    script(src='/js/jquery-1.11.2.min.js')
-    script(src='/js/bootstrap.min.js')
+    script(src='/js/lib/jquery-1.11.2.min.js')
+    script(src='/js/lib/bootstrap.min.js')
     script(src='/js/doudou.js')
     block head
   body
@@ -14,7 +14,7 @@ html
       .container
         ul.nav.navbar-nav.navbar-left
           li
-            a(href='#') PC game
+            a(href='/game/new') PC game
           li
             a(href='#') Desktop game
         ui.nav.navbar-nav.navbar-right
@@ -26,5 +26,5 @@ html
                 a(href='#') Action
               li.divider
               li
-                a(href='#') Beta
+                a(href='/logout') Logout
     block body

@@ -13,6 +13,12 @@ var fieldsDefine = {
     // releaseDate: Date,
     developer: String,
     description: String,
+    addedBy: Number,
+    addedAt: {
+        type: Number,
+        default: Date.now(),
+        required: true
+    }
 };
 var Game = modelUtil.buildModel('Game', fieldsDefine, database.doudou);
 
