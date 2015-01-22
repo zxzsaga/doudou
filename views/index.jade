@@ -11,7 +11,7 @@ append body
                 .col-lg-4
                   img(src=game.coverUrl, alt='cover')
                 .col-lg-8
-                  a(href='/game/main/' + game.name)
+                  a(href='/game/main/' + game._id)
                     p #{ game.name }
                   p 平台: #{ game.platform }
                   p 开发者: #{ game.developer }

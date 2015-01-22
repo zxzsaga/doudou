@@ -90,6 +90,9 @@ app.get('/', function(req, res) {
             res.send('find game error');
             return;
         }
+        games.forEach(function(game) {
+            game.coverUrl = '/' + game.coverUrl;
+        });
         res.render('index.jade', { games: games });
     });
 });
@@ -304,7 +307,30 @@ app.post('/img/upload', function(req, res) {
 });
 
 app.get('/game/main/:id', function(req, res) {
-    res.render('game/main.jade');
+    var objectId = req.param('id');
+    Game.findOne({ _id: objectId }, function(err, game) {
+        if (err) {
+            logger.error(err);
+            res.send('find game error');
+            return;
+        }
+        game.coverUrl = '/' + game.coverUrl;
+        res.render('game/main.jade', { game: game });
+    });
+});
+
+app.post('/game/rating/:id', function(req, res) {
+    var gameId = req.param('id');
+    var userId = req.session.user.id;
+    var overall = req.param('overall');
+    var presentation = req.param('presentation');
+    var graphics = req.param('graphics');
+    var sound = req.param('sound');
+    var gamePlay = req.param('gameplay');
+    var lastingAppeal = req.param('lastingAppeal');
+    var ratingDoc = {
+    };
+    res.redirect('/game/main/' + req.param(id));
 });
 
 app.get('/maxUserId', function(req, res) {

@@ -1,22 +1,20 @@
 'use strict';
 
-var gameRatingSchema = new mongoose.Schema(
-    {
-        gameId: ObjectId,
-        raterId: ObjectId,
-        rating: {
-            overall: Number,
-            presentation: Number,
-            graphics: Number,
-            sound: Number,
-            gameplay: Number,
-            lastingAppeal: Number
-        },
-        createdAt: Date
-    },
-    { collection: 'GameRating' }
-);
+var modelUtil = require(appModules.util.modelUtil);
 
-var GameRating = mongoose.model('GameRating', gameRatingSchema);
+var fieldsDefine = {
+    gameId: ObjectId,
+    raterId: Number,
+    rating: {
+        overall: Number,
+        presentation: Number,
+        graphics: Number,
+        sound: Number,
+        gameplay: Number,
+        lastingAppeal: Number
+    },
+    createdAt: Date
+};
+var GameRating = modelUtil.buildModel('GameRating', fieldsDefine. database.doudou);
 
 module.exports = GameRating;
