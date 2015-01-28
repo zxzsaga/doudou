@@ -12,10 +12,17 @@ append body
         .row
           .col-lg-3
             img(src=game.coverUrl)
-          .col-lg-6
+          .col-lg-5
             p 平台: #{ game.platform }
             p 开发者: #{ game.developer }
             p 介绍: #{ game.description }
+          .col-lg-4
+            #gameRating-overall.gameRating(rating=(gameRating.overall || 0))
+            #gameRating-presentation.gameRating(rating=(gameRating.presentation || 0))
+            #gameRating-graphics.gameRating(rating=(gameRating.graphics || 0))
+            #gameRating-sound.gameRating(rating=(gameRating.sound || 0))
+            #gameRating-gameplay.gameRating(rating=(gameRating.gameplay || 0))
+            #gameRating-lastingAppeal.gameRating(rating=(gameRating.lastingAppeal || 0))
       .col-lg-4
     br
     .row
@@ -28,38 +35,40 @@ append body
         .modal-header
           button.close(type='button', data-dismiss='modal', aria-label='Close')
             span(aria-hidden='true') &times
-          h4.modal-title#ratingModalLabel #{ game.name }
+          h4#ratingModalLabel.modal-title #{ game.name }
         form.form-horizontal(action='/game/rating/' + game.id, method='post', role='form')
           .modal-body
             .form-group
               label.control-label.col-lg-2(for='#rating-presentation') 整体表现
               .col-lg-10
-                .raty#rating-presentation
+                #rating-presentation.raty
             .form-group
               label.control-label.col-lg-2(for='#rating-graphics') 画面呈现
               .col-lg-10
-                .raty#rating-graphics
+                #rating-graphics.raty
             .form-group
               label.control-label.col-lg-2(for='#rating-sound') 音乐音效
               .col-lg-10
-                .raty#rating-sound
+                #rating-sound.raty
             .form-group
               label.control-label.col-lg-2(for='#rating-gameplay') 游戏性
               .col-lg-10
-                .raty#rating-gameplay
+                #rating-gameplay.raty
             .form-group
               label.control-label.col-lg-2(for='#rating-lastingAppeal') 耐玩度
               .col-lg-10
-                .raty#rating-lastingAppeal
+                #rating-lastingAppeal.raty
+            hr
             .form-group
               label.control-label.col-lg-2(for='#rating-overall') 总分
-              .col-lg-4
-                input#rating-overall.form-control(name='overall', type='text')
+              .col-lg-10
+                #rating-overall.raty
             input#presentation(name='presentation', type='hidden')
             input#graphics(name='graphics', type='hidden')
             input#sound(name='sound', type='hidden')
             input#gameplay(name='gameplay', type='hidden')
             input#lastingAppeal(name='lastingAppeal', type='hidden')
+            input#overall(name='overall', type='hidden')
           .modal-footer
             button.btn.btn-default(type='button', data-dismiss='modal') Close
             button.btn.btn-primary(type='submit') 提交

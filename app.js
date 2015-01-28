@@ -5,7 +5,7 @@ var path = require('path');
 var util = require('util');
 
 // 第三方库
-var express    = require('express'), app = express();
+var express    = require('express'), app = express(), router = express.Router;
 var glob       = require('glob');
 var im         = require('imagemagick');
 var log4js     = require('log4js'), logger = log4js.getLogger();
@@ -67,15 +67,16 @@ loadModulesPath();
 
 // 全局变量定义
 global.appModules = appModules;
-global.logger = logger;
-global.mongoose = mongoose;
-global.database = database;
-global.Constants = require(appModules.app.Constants);
+global.logger     = logger;
+global.express    = express
+global.mongoose   = mongoose;
+global.database   = database;
+global.Constants  = require(appModules.app.Constants);
 
 // 自定义模块加载
-var Game = require(appModules.models.Game);
-var User = require(appModules.models.User);
-
+var Game       = require(appModules.models.Game);
+var User       = require(appModules.models.User);
+var GameRating = require(appModules.models.GameRating);
 
 
 // 登陆相关
@@ -307,15 +308,41 @@ app.post('/img/upload', function(req, res) {
 });
 
 app.get('/game/main/:id', function(req, res) {
-    var objectId = req.param('id');
-    Game.findOne({ _id: objectId }, function(err, game) {
+    var id = req.param('id');
+    Game.findOne({ _id: id }, function(err, game) {
         if (err) {
             logger.error(err);
             res.send('find game error');
             return;
         }
         game.coverUrl = '/' + game.coverUrl;
-        res.render('game/main.jade', { game: game });
+
+        GameRating.find({ gameId: id }, function(err, gameRatings) {
+            if (err) {
+                logger.error(err);
+                res.send('find gameRating error');
+                return;
+            }
+            var finalRating = {
+                overall: 0,
+                presentation: 0,
+                graphics: 0,
+                sound: 0,
+                gameplay: 0,
+                lastingAppeal: 0
+            };
+            gameRatings.forEach(function(gameRating) {
+                for (var key in finalRating) {
+                    finalRating[key] += gameRating.rating[key];
+                }
+            });
+            for (var key in finalRating) {
+                var rating = finalRating[key] / gameRatings.length;
+                rating = Math.round(rating * 10) / 10;    // 保留 1 位小数
+                finalRating[key] = rating;
+            }
+            res.render('game/main.jade', { game: game, gameRating: finalRating });
+        });
     });
 });
 
@@ -326,11 +353,30 @@ app.post('/game/rating/:id', function(req, res) {
     var presentation = req.param('presentation');
     var graphics = req.param('graphics');
     var sound = req.param('sound');
-    var gamePlay = req.param('gameplay');
+    var gameplay = req.param('gameplay');
     var lastingAppeal = req.param('lastingAppeal');
     var ratingDoc = {
+        gameId: gameId,
+        raterId: userId,
+        rating: {
+            overall: overall,
+            presentation: presentation,
+            graphics: graphics,
+            sound: sound,
+            gameplay: gameplay,
+            lastingAppeal: lastingAppeal
+        }
     };
-    res.redirect('/game/main/' + req.param(id));
+
+    var gameRating = new GameRating(ratingDoc);
+    gameRating.save(function(err, gameRating) {
+        if (err) {
+            logger.error(err);
+            res.send('gameRating save error');
+            return;
+        }
+        res.redirect('/game/main/' + req.param('id'));
+    });
 });
 
 app.get('/maxUserId', function(req, res) {

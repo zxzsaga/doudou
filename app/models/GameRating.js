@@ -1,6 +1,7 @@
 'use strict';
 
 var modelUtil = require(appModules.util.modelUtil);
+var ObjectId = mongoose.Schema.Types.ObjectId;
 
 var fieldsDefine = {
     gameId: ObjectId,
@@ -15,6 +16,6 @@ var fieldsDefine = {
     },
     createdAt: Date
 };
-var GameRating = modelUtil.buildModel('GameRating', fieldsDefine. database.doudou);
+var GameRating = modelUtil.buildModel('GameRating', fieldsDefine, database.doudou);
 
 module.exports = GameRating;
