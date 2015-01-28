@@ -14,7 +14,10 @@ var fieldsDefine = {
         gameplay: Number,
         lastingAppeal: Number
     },
-    createdAt: Date
+    createdAt: {
+        type: Number,
+        default: Date.now()
+    }
 };
 var GameRating = modelUtil.buildModel('GameRating', fieldsDefine, database.doudou);
 

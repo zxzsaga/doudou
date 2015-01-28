@@ -47,8 +47,18 @@ append body
     br
     .row
       .col-lg-2
-        button.btn.btn-default 想玩
+        // button.btn.btn-default 想玩
         button.btn.btn-default(type='button', data-toggle='modal', data-target='#ratingModal') 玩过
+    .row
+      .col-lg-12
+        h3 #{ game.name } 的简介
+        p #{ game.description }
+    .row
+      .col-lg-12
+        h3 #{ game.name } 的短评 
+        each gameComment in gameComments
+          p #{ game.commentedBy } 说: #{ game.comment }
+
   #ratingModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='ratingModalLabel', aria-hidden='true')
     .modal-dialog
       .modal-content
@@ -59,36 +69,37 @@ append body
         form.form-horizontal(action='/game/rating/' + game.id, method='post', role='form')
           .modal-body
             .form-group
-              label.control-label.col-lg-2(for='#rating-presentation') 整体表现
+              label.control-label.col-lg-2(for='#myGameRating-presentation') 整体表现
               .col-lg-10
-                #rating-presentation.raty
+                #myGameRating-presentation.myGameRating(rating=(myGameRating.presentation || 0))
             .form-group
-              label.control-label.col-lg-2(for='#rating-graphics') 画面呈现
+              label.control-label.col-lg-2(for='#myGameRating-graphics') 画面呈现
               .col-lg-10
-                #rating-graphics.raty
+                #myGameRating-graphics.myGameRating(rating=(myGameRating.graphics || 0))
             .form-group
-              label.control-label.col-lg-2(for='#rating-sound') 音乐音效
+              label.control-label.col-lg-2(for='#myGameRating-sound') 音乐音效
               .col-lg-10
-                #rating-sound.raty
+                #myGameRating-sound.myGameRating(rating=(myGameRating.sound || 0))
             .form-group
-              label.control-label.col-lg-2(for='#rating-gameplay') 游戏性
+              label.control-label.col-lg-2(for='#myGameRating-gameplay') 游戏性
               .col-lg-10
-                #rating-gameplay.raty
+                #myGameRating-gameplay.myGameRating(rating=(myGameRating.gameplay || 0))
             .form-group
-              label.control-label.col-lg-2(for='#rating-lastingAppeal') 耐玩度
+              label.control-label.col-lg-2(for='#myGameRating-lastingAppeal') 耐玩度
               .col-lg-10
-                #rating-lastingAppeal.raty
+                #myGameRating-lastingAppeal.myGameRating(rating=(myGameRating.lastingAppeal || 0))
             hr
             .form-group
-              label.control-label.col-lg-2(for='#rating-overall') 总分
+              label.control-label.col-lg-2(for='#myGameRating-overall') 总分
               .col-lg-10
-                #rating-overall.raty
+                #myGameRating-overall.myGameRating(rating=(myGameRating.overall || 0))
             input#presentation(name='presentation', type='hidden')
             input#graphics(name='graphics', type='hidden')
             input#sound(name='sound', type='hidden')
             input#gameplay(name='gameplay', type='hidden')
             input#lastingAppeal(name='lastingAppeal', type='hidden')
             input#overall(name='overall', type='hidden')
+            textarea.form-control(name='comment', rows=3, value=myGameComment)
           .modal-footer
             button.btn.btn-default(type='button', data-dismiss='modal') Close
             button.btn.btn-primary(type='submit') 提交

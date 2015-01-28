@@ -16,8 +16,7 @@ var fieldsDefine = {
     addedBy: Number,
     addedAt: {
         type: Number,
-        default: Date.now(),
-        required: true
+        default: Date.now()
     }
 };
 var Game = modelUtil.buildModel('Game', fieldsDefine, database.doudou);
