@@ -317,29 +317,33 @@ app.get('/game/main/:id', function(req, res) {
         }
         game.coverUrl = '/' + game.coverUrl;
 
-        GameRating.find({ gameId: id }, function(err, gameRatings) {
+        var aggregateCondition = [
+            {
+                $match: {
+                    gameId: mongoose.Types.ObjectId(id)
+                },
+            },
+            {
+                $group: {
+                    _id           : '$gameId',
+                    overall       : { $avg: '$rating.overall' },
+                    presentation  : { $avg: '$rating.presentation' },
+                    graphics      : { $avg: '$rating.graphics' },
+                    sound         : { $avg: '$rating.sound' },
+                    gameplay      : { $avg: '$rating.gameplay' },
+                    lastingAppeal : { $avg: '$rating.lastingAppeal' }
+                }
+            }
+        ];
+        GameRating.aggregate(aggregateCondition, function(err, aggregateDocs) {
             if (err) {
                 logger.error(err);
                 res.send('find gameRating error');
                 return;
             }
-            var finalRating = {
-                overall: 0,
-                presentation: 0,
-                graphics: 0,
-                sound: 0,
-                gameplay: 0,
-                lastingAppeal: 0
-            };
-            gameRatings.forEach(function(gameRating) {
-                for (var key in finalRating) {
-                    finalRating[key] += gameRating.rating[key];
-                }
-            });
+            var finalRating = aggregateDocs[0];
             for (var key in finalRating) {
-                var rating = finalRating[key] / gameRatings.length;
-                rating = Math.round(rating * 10) / 10;    // 保留 1 位小数
-                finalRating[key] = rating;
+                finalRating[key] = Math.round(finalRating[key] * 10) / 10;    // 保留 1 位小数
             }
             res.render('game/main.jade', { game: game, gameRating: finalRating });
         });

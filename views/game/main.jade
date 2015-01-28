@@ -17,12 +17,32 @@ append body
             p 开发者: #{ game.developer }
             p 介绍: #{ game.description }
           .col-lg-4
-            #gameRating-overall.gameRating(rating=(gameRating.overall || 0))
-            #gameRating-presentation.gameRating(rating=(gameRating.presentation || 0))
-            #gameRating-graphics.gameRating(rating=(gameRating.graphics || 0))
-            #gameRating-sound.gameRating(rating=(gameRating.sound || 0))
-            #gameRating-gameplay.gameRating(rating=(gameRating.gameplay || 0))
-            #gameRating-lastingAppeal.gameRating(rating=(gameRating.lastingAppeal || 0))
+            form.form-horizontal(role='form')
+              .form-group
+                label.col-lg-6.control-label(for="gameRating-overall") 总分
+                .col-lg-6
+                  #gameRating-overall.gameRating(rating=(gameRating.overall || 0))
+              hr
+              .form-group
+                label.col-lg-6.control-label(for="gameRating-presentation") 整体表现
+                .col-lg-6
+                  #gameRating-presentation.gameRating(rating=(gameRating.presentation || 0))
+              .form-group
+                label.col-lg-6.control-label(for="gameRating-graphics") 画面呈现
+                .col-lg-6
+                  #gameRating-graphics.gameRating(rating=(gameRating.graphics || 0))
+              .form-group
+                label.col-lg-6.control-label(for="gameRating-sound") 音乐音效
+                .col-lg-6
+                  #gameRating-sound.gameRating(rating=(gameRating.sound || 0))
+              .form-group
+                label.col-lg-6.control-label(for="gameRating-gameplay") 游戏性
+                .col-lg-6
+                  #gameRating-gameplay.gameRating(rating=(gameRating.gameplay || 0))
+              .form-group
+                label.col-lg-6.control-label(for="gameRating-lastingAppeal") 耐玩度
+                .col-lg-6
+                  #gameRating-lastingAppeal.gameRating(rating=(gameRating.lastingAppeal || 0))
       .col-lg-4
     br
     .row
