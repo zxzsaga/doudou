@@ -288,7 +288,7 @@ app.post('/game/create', function(req, res) {
                 res.send('game save error');
                 return;
             }
-            res.send('ok');
+            res.redirect('/');
             return;
         });
     }
