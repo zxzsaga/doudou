@@ -30,7 +30,7 @@ app.use(session({ secret: 'keyboard cat' }));
 app.use(bodyParser());
 
 // 端口设置
-var nodePort = process.env.NODE_PORT || 3000;
+var nodePort = process.env.NODE_PORT || 80;
 app.listen(nodePort);
 
 // 数据库设置
