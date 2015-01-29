@@ -211,6 +211,11 @@ app.post('/game/create', function(req, res) {
         coverParams[key] = req.param(key);
     });
 
+    if (!coverParams.imgUrl || coverParams.imgUrl === '') {
+        res.send('no cover img');
+        return;
+    }
+
     Game.findOne({ name: gameParams.name }, function(err, game) {
         if (err) {
             logger.error(err);
@@ -360,31 +365,57 @@ app.get('/game/main/:id', function(req, res) {
                 }
                 // gameComments 表示游戏的短评
 
-                GameRating.findOne({ raterId: userId }, function(err, myGameRating) {
+                var gameCommentByIdArr = [];
+                gameComments.forEach(function(gameComment) {
+                    gameCommentByIdArr.push(gameComment.commentedBy);
+                });
+                User.find({ _id: { $in: gameCommentByIdArr } }, { name: 1 }, function(err, users) {
                     if (err) {
                         logger.error(err);
-                        res.send('find myGameRating error');
+                        res.send('fin user error');
                         return;
                     }
-                    // myGameRating 表示我对这个游戏的评分
+                    var userIdNameMap = {};
+                    users.forEach(function(user) {
+                        userIdNameMap[user._id] = user.name;
+                    });
 
-                    GameComment.findOne({ commentedBy: userId }, function(err, myGameComment) {
+                    var gameCommentsToUser = [];
+                    gameComments.forEach(function(gameComment) {
+                        var gameCommentToUser = {
+                            commentedBy: userIdNameMap[gameComment.commentedBy],
+                            comment: gameComment.comment
+                        };
+                        gameCommentsToUser.push(gameCommentToUser);
+                    });
+                    // gameCommentsToUser 将 gameComments 中的 commentedBy 从 id 改为 name, 以便显示给用户
+
+                    GameRating.findOne({ raterId: userId }, function(err, myGameRating) {
                         if (err) {
                             logger.error(err);
-                            res.send('find myGameComment error');
+                            res.send('find myGameRating error');
                             return;
                         }
-                        // myGameComment 表示我对这个游戏的评价
+                        // myGameRating 表示我对这个游戏的评分
 
-                        var gameRelativeDoc = {
-                            game: game,
-                            gameRating: finalRating,
-                            gameComments: gameComments,
-                            myGameRating: myGameRating.rating,
-                            myGameComment: myGameComment && myGameComment.comment
-                        };
-                        res.render('game/main.jade', gameRelativeDoc);
-                    })
+                        GameComment.findOne({ commentedBy: userId }, function(err, myGameComment) {
+                            if (err) {
+                                logger.error(err);
+                                res.send('find myGameComment error');
+                                return;
+                            }
+                            // myGameComment 表示我对这个游戏的短评
+
+                            var gameRelativeDoc = {
+                                game: game,
+                                gameRating: finalRating,
+                                gameComments: gameCommentsToUser,
+                                myGameRating: myGameRating.rating,
+                                myGameComment: myGameComment && myGameComment.comment
+                            };
+                            res.render('game/main.jade', gameRelativeDoc);
+                        })
+                    });
                 });
             });
         });
@@ -401,56 +432,65 @@ app.post('/game/rating/:id', function(req, res) {
     var gameplay = req.param('gameplay');
     var lastingAppeal = req.param('lastingAppeal');
     var comment = req.param('comment');
-    var ratingDoc = {
-        gameId: gameId,
-        raterId: userId,
-        rating: {
-            overall: overall,
-            presentation: presentation,
-            graphics: graphics,
-            sound: sound,
-            gameplay: gameplay,
-            lastingAppeal: lastingAppeal
-        }
-    };
 
-    GameRating.findOne({ gameId: gameId, raterId: userId }, function(err, gameRatingDoc) {
+    GameRating.findOne({ gameId: gameId, raterId: userId }, function(err, gameRating) {
         if (err) {
             logger.error(err);
             res.send('find gameRating error');
             return;
         }
 
-        if (gameRatingDoc) {
-            gameRatingDoc.rating = ratingDoc.rating;
+        var ratingDoc = {
+            gameId: gameId,
+            raterId: userId,
+            rating: {
+                overall: overall,
+                presentation: presentation,
+                graphics: graphics,
+                sound: sound,
+                gameplay: gameplay,
+                lastingAppeal: lastingAppeal
+            }
+        };
+        if (gameRating) {
+            gameRating.rating = ratingDoc.rating;
         } else {
-            gameRatingDoc = ratingDoc;
+            gameRating = new GameRating(ratingDoc);
         }
 
-        var gameRating = new GameRating(gameRatingDoc);
         gameRating.save(function(err, gameRating) {
             if (err) {
                 logger.error(err);
-                res.send('gameRating save error');
+                res.send('save gameRating error');
                 return;
             }
-            if (!comment) {
-                res.redirect('/game/main/' + req.param('id'));
-                return;
-            }
-            var commentDoc = {
-                gameId: gameId,
-                commentedBy: userId,
-                comment: comment,
-            };
-            var gameComment = new GameComment(commentDoc);
-            gameComment.save(function(err, gameComment) {
+
+            GameComment.findOne({ gameId: gameId, commentedBy: userId }, function(err, gameComment) {
                 if (err) {
                     logger.error(err);
-                    res.send('gameComment save error');
+                    res.send('find gameComment error');
                     return;
                 }
-                res.redirect('/game/main/' + req.param('id'));
+
+                if (gameComment) {
+                    gameComment.comment = comment;
+                } else {
+                    var commentDoc = {
+                        gameId: gameId,
+                        commentedBy: userId,
+                        comment: comment,
+                    };
+                    gameComment = new GameComment(commentDoc);
+                }
+
+                gameComment.save(function(err, gameComment) {
+                    if (err) {
+                        logger.error(err);
+                        res.send('save gameComment error');
+                        return;
+                    }
+                    res.redirect('/game/main/' + req.param('id'));
+                });
             });
         });
     });

@@ -57,7 +57,7 @@ append body
       .col-lg-12
         h3 #{ game.name } 的短评 
         each gameComment in gameComments
-          p #{ game.commentedBy } 说: #{ game.comment }
+          p #{ gameComment.commentedBy } 说: #{ gameComment.comment }
 
   #ratingModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='ratingModalLabel', aria-hidden='true')
     .modal-dialog
@@ -99,7 +99,7 @@ append body
             input#gameplay(name='gameplay', type='hidden')
             input#lastingAppeal(name='lastingAppeal', type='hidden')
             input#overall(name='overall', type='hidden')
-            textarea.form-control(name='comment', rows=3, value=myGameComment)
+            textarea.form-control(name='comment', rows=3) #{ myGameComment }
           .modal-footer
             button.btn.btn-default(type='button', data-dismiss='modal') Close
             button.btn.btn-primary(type='submit') 提交
