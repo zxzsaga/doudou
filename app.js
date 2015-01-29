@@ -349,10 +349,14 @@ app.get('/game/main/:id', function(req, res) {
                 res.send('find gameRating error');
                 return;
             }
-            var finalRating = aggregateDocs[0];
-            for (var key in finalRating) {
-                if (key !== '_id') {
-                    finalRating[key] = Math.round(finalRating[key] * 10) / 10;    // 保留 1 位小数
+
+            var finalRating = {};
+            if (aggregateDocs && (aggregateDocs.length !== 0)) {
+                finalRating = aggregateDocs[0];
+                for (var key in finalRating) {
+                    if (key !== '_id') {
+                        finalRating[key] = Math.round(finalRating[key] * 10) / 10;    // 保留 1 位小数
+                    }
                 }
             }
             // finalRating 表示游戏的平均评分
@@ -410,7 +414,7 @@ app.get('/game/main/:id', function(req, res) {
                                 game: game,
                                 gameRating: finalRating,
                                 gameComments: gameCommentsToUser,
-                                myGameRating: myGameRating && myGameRating.rating,
+                                myGameRating: (myGameRating && myGameRating.rating) || {},
                                 myGameComment: myGameComment && myGameComment.comment
                             };
                             res.render('game/main.jade', gameRelativeDoc);

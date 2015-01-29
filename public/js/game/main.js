@@ -13,6 +13,9 @@ $(document).ready(function() {
                 score     : myFieldRating.attr('rating')
             }
         );
+        var formKeyId = myFieldRating.attr('id').slice(13);
+        var score = myFieldRating.raty('score');
+        $('#' + formKeyId).val(score);
     }
     myGameRating.click(function() {
         var self = $(this);
