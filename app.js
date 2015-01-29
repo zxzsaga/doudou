@@ -85,7 +85,7 @@ app.get('/', function(req, res) {
         res.render('login.jade');
         return;
     }
-    Game.find().limit(10).exec(function(err, games) {
+    Game.find().sort({ addedAt: -1 }).limit(10).exec(function(err, games) {
         if (err) {
             logger.error(err);
             res.send('find game error');
