@@ -410,7 +410,7 @@ app.get('/game/main/:id', function(req, res) {
                                 game: game,
                                 gameRating: finalRating,
                                 gameComments: gameCommentsToUser,
-                                myGameRating: myGameRating.rating,
+                                myGameRating: myGameRating && myGameRating.rating,
                                 myGameComment: myGameComment && myGameComment.comment
                             };
                             res.render('game/main.jade', gameRelativeDoc);
