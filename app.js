@@ -361,7 +361,7 @@ app.get('/game/main/:id', function(req, res) {
             }
             // finalRating 表示游戏的平均评分
 
-            GameComment.find().limit(10).exec(function(err, gameComments) {
+            GameComment.find({ gameId: gameId }).limit(10).exec(function(err, gameComments) {
                 if (err) {
                     logger.error(err);
                     res.send('find gameComment error');
