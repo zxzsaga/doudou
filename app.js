@@ -314,9 +314,9 @@ app.post('/img/upload', function(req, res) {
 
 app.get('/game/main/:id', function(req, res) {
     // TODO 优化这个接口, 在用户点击评分的时候再查找自己对这个游戏的评分和评价
-    var id = req.param('id');
+    var gameId = req.param('id');
     var userId = req.session.user.id;
-    Game.findOne({ _id: id }, function(err, game) {
+    Game.findOne({ _id: gameId }, function(err, game) {
         if (err) {
             logger.error(err);
             res.send('find game error');
@@ -328,7 +328,7 @@ app.get('/game/main/:id', function(req, res) {
         var aggregateCondition = [
             {
                 $match: {
-                    gameId: mongoose.Types.ObjectId(id)
+                    gameId: mongoose.Types.ObjectId(gameId)
                 },
             },
             {
@@ -394,7 +394,7 @@ app.get('/game/main/:id', function(req, res) {
                     });
                     // gameCommentsToUser 将 gameComments 中的 commentedBy 从 id 改为 name, 以便显示给用户
 
-                    GameRating.findOne({ raterId: userId }, function(err, myGameRating) {
+                    GameRating.findOne({ gameId: gameId, raterId: userId }, function(err, myGameRating) {
                         if (err) {
                             logger.error(err);
                             res.send('find myGameRating error');
@@ -402,7 +402,7 @@ app.get('/game/main/:id', function(req, res) {
                         }
                         // myGameRating 表示我对这个游戏的评分
 
-                        GameComment.findOne({ commentedBy: userId }, function(err, myGameComment) {
+                        GameComment.findOne({ gameId: gameId, commentedBy: userId }, function(err, myGameComment) {
                             if (err) {
                                 logger.error(err);
                                 res.send('find myGameComment error');
