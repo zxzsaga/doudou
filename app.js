@@ -80,12 +80,15 @@ var GameRating  = require(appModules.models.GameRating);
 var GameComment = require(appModules.models.GameComment);
 
 // 登陆相关
+// '/' 和 '/:page' 应该可以写成一个
 app.get('/', function(req, res) {
     if (!req.session.user) {
         res.render('login.jade');
         return;
     }
-    Game.find().sort({ addedAt: -1 }).limit(10).exec(function(err, games) {
+    var page = parseInt(req.param('page')) || 1;
+    var pageSize = 10;
+    Game.find().sort({ addedAt: -1 }).skip((page - 1) * pageSize).limit(pageSize).exec(function(err, games) {
         if (err) {
             logger.error(err);
             res.send('find game error');
@@ -94,7 +97,14 @@ app.get('/', function(req, res) {
         games.forEach(function(game) {
             game.coverUrl = '/' + game.coverUrl;
         });
-        res.render('index.jade', { games: games });
+        Game.count({}, function(err, gameCount) {
+            if (err) {
+                logger.error(err);
+                res.send('count game error');
+                return;
+            }
+            res.render('index.jade', { games: games, pageIndex: page, pageCount: Math.ceil(gameCount / pageSize) });
+        })
     });
 });
 app.get('/login', function(req, res) {

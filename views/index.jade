@@ -16,3 +16,40 @@ append body
                   p 平台: #{ game.platform }
                   p 开发者: #{ game.developer }
                   p 介绍: #{ game.description }
+    .row
+      .col-lg-12
+        nav.text-center
+          ui.pagination
+            if pageIndex === 1
+              li.disabled
+                a(href='#')
+                  span(aria-hidden='true') &laquo;
+                  span.sr-only Previous
+            else
+              li
+                a(href='/?page=' + (pageIndex - 1))
+                  span(aria-hidden='true') &laquo;
+                  span.sr-only Previous
+            - var pageIndexMin = pageIndex - 3;
+            - var pageIndexMax = pageIndex + 3;
+            - pageIndexMin = pageIndexMin < 1 ? 1 : pageIndexMin;
+            - pageIndexMax = pageIndexMax > pageCount ? pageCount : pageIndexMax;
+            - var pageIterator = pageIndexMin
+            while pageIterator <= pageIndexMax
+              if pageIterator === pageIndex
+                li.active
+                  a(href='/?page=' + pageIterator) #{ pageIterator }
+              else
+                li
+                  a(href='/?page=' + pageIterator) #{ pageIterator }
+              - pageIterator += 1
+            if pageIndex === pageCount
+              li.disabled
+                a(href='#')
+                  span(aria-hidden='true') &raquo;
+                  span.sr-only Previous
+            else
+              li
+                a(href='/?page=' + (pageIndex + 1))
+                  span(aria-hidden='true') &raquo;
+                  span.sr-only Previous
