@@ -1,5 +1,5 @@
 'use strict';
-
+/*
 var gameReviewSchema = new mongoose.Schema(
     {
         gameId: ObjectId,
@@ -13,3 +13,4 @@ var gameReviewSchema = new mongoose.Schema(
 var GameReview = mongoose.model('GameReview', gameReviewSchema);
 
 module.exports = GameReview;
+*/
