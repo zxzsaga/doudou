@@ -1,16 +1,13 @@
 'use strict';
-/*
-var gameReviewSchema = new mongoose.Schema(
-    {
-        gameId: ObjectId,
-        reviewerId: ObjectId,
-        review: String,
-        createdAt: Date
-    },
-    { collection: 'GameReview' }
-);
 
-var GameReview = mongoose.model('GameReview', gameReviewSchema);
+var modelUtil = appModules.util.modelUtil;
 
-module.exports = GameReview;
-*/
+var fieldsDefine = {
+    gameId: ObjectId,
+    reviewerId: ObjectId,
+    review: String,
+    createdAt: Date
+};
+var GameReview = modelUtil.buildModel('GameReview', fieldsDefine, database.doudou);
+
+module.exports = Game;
