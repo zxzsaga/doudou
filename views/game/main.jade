@@ -22,30 +22,42 @@ append body
           .col-lg-4
             form.form-horizontal(role='form')
               .form-group
-                label.col-lg-6.control-label(for="gameRating-overall") 总分
-                .col-lg-6
+                label.col-lg-4.control-label(for="gameRating-overall") 总分
+                .col-lg-6.control-label
                   #gameRating-overall.gameRating(rating=(gameRating.overall || 0))
+                .col-lg-2.control-label
+                  p #{ gameRating.overall }
               hr
               .form-group
-                label.col-lg-6.control-label(for="gameRating-presentation") 整体表现
-                .col-lg-6
+                label.col-lg-4.control-label(for="gameRating-presentation") 整体表现
+                .col-lg-6.control-label
                   #gameRating-presentation.gameRating(rating=(gameRating.presentation || 0))
+                .col-lg-2.control-label
+                  p #{ gameRating.presentation }
               .form-group
-                label.col-lg-6.control-label(for="gameRating-graphics") 画面呈现
-                .col-lg-6
+                label.col-lg-4.control-label(for="gameRating-graphics") 画面呈现
+                .col-lg-6.control-label
                   #gameRating-graphics.gameRating(rating=(gameRating.graphics || 0))
+                .col-lg-2.control-label
+                  p #{ gameRating.graphics }
               .form-group
-                label.col-lg-6.control-label(for="gameRating-sound") 音乐音效
-                .col-lg-6
+                label.col-lg-4.control-label(for="gameRating-sound") 音乐音效
+                .col-lg-6.control-label
                   #gameRating-sound.gameRating(rating=(gameRating.sound || 0))
+                .col-lg-2.control-label
+                  p #{ gameRating.sound }
               .form-group
-                label.col-lg-6.control-label(for="gameRating-gameplay") 游戏性
-                .col-lg-6
+                label.col-lg-4.control-label(for="gameRating-gameplay") 游戏性
+                .col-lg-6.control-label
                   #gameRating-gameplay.gameRating(rating=(gameRating.gameplay || 0))
+                .col-lg-2.control-label
+                  p #{ gameRating.gameplay }
               .form-group
-                label.col-lg-6.control-label(for="gameRating-lastingAppeal") 耐玩度
-                .col-lg-6
+                label.col-lg-4.control-label(for="gameRating-lastingAppeal") 耐玩度
+                .col-lg-6.control-label
                   #gameRating-lastingAppeal.gameRating(rating=(gameRating.lastingAppeal || 0))
+                .col-lg-2.control-label
+                  p #{ gameRating.lastingAppeal }
       .col-lg-4
     br
     .row

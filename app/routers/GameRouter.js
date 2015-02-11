@@ -231,7 +231,7 @@ GameRouter.get('/main/:id', function(req, res) {
     });
 });
 
-GameRouter.post('/game/rating/:id', function(req, res) {
+GameRouter.post('/rating/:id', function(req, res) {
     var gameId = req.param('id');
     var userId = req.session.user.id;
     var overall = req.param('overall');
@@ -305,7 +305,7 @@ GameRouter.post('/game/rating/:id', function(req, res) {
     });
 });
 
-GameRouter.get('/game/:id/edit', function(req, res) {
+GameRouter.get('/:id/edit', function(req, res) {
     var gameId = req.param('id');
     Game.findOne({ _id: gameId }, function(err, game) {
         if (err) {
@@ -325,7 +325,7 @@ GameRouter.get('/game/:id/edit', function(req, res) {
     });
 });
 
-GameRouter.post('/game/update', function(req, res) {
+GameRouter.post('/update', function(req, res) {
     var gameParams = {};
     var gameFields = Game.getFieldsDefine();
     for (var i in gameFields) {
