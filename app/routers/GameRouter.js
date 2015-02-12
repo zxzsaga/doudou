@@ -10,6 +10,9 @@ var GameRouter = module.exports = express.Router();
 // before filters
 GameRouter.use(appModules.filters.SessionFilter);
 
+/**
+ * Render add game page
+ */
 GameRouter.get('/new', function(req, res) {
     var params = {
         platforms: Constants.GAME.PLATFORM
@@ -17,6 +20,9 @@ GameRouter.get('/new', function(req, res) {
     res.render('game/new.jade', params);
 });
 
+/**
+ * Add game
+ */
 GameRouter.post('/create', function(req, res) {
     // 游戏基本信息
     var gameParams = {};
@@ -305,7 +311,7 @@ GameRouter.post('/rating/:id', function(req, res) {
     });
 });
 
-GameRouter.get('/:id/edit', function(req, res) {
+GameRouter.get('/edit/:id', function(req, res) {
     var gameId = req.param('id');
     Game.findOne({ _id: gameId }, function(err, game) {
         if (err) {
