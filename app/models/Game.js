@@ -1,13 +1,14 @@
 'use strict';
 
-var modelUtil = require(appModules.util.modelUtil);
+var modelUtil = appModules.util.modelUtil;
+var Mixed = mongoose.Schema.Types.Mixed;
 
 var fieldsDefine = {
     name: {
         type: String,
         required: true
     },
-    platform: String,
+    platform: Mixed,
     tag: Array,
     coverUrl: String,
     // releaseDate: Date,

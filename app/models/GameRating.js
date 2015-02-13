@@ -1,6 +1,6 @@
 'use strict';
 
-var modelUtil = require(appModules.util.modelUtil);
+var modelUtil = appModules.util.modelUtil;
 var ObjectId = mongoose.Schema.Types.ObjectId;
 
 var fieldsDefine = {
