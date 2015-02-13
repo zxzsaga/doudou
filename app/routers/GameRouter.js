@@ -17,7 +17,7 @@ GameRouter.get('/new', function(req, res) {
     var params = {
         platforms: Constants.GAME.PLATFORM
     };
-    res.render('game/new.jade', params);
+    res.render('game/edit.jade', params);
 });
 
 /**
