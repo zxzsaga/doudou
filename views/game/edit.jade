@@ -18,12 +18,23 @@ append body
           .form-group
             label.control-label.col-lg-2(for='platform') 平台
             .col-lg-3
-              select.form-control(name='platform')
-                each platform in platforms
-                  if (game && game.platform === platform)
-                    option(value=platform, checked='checked') #{ platform }
-                  else
-                    option(value=platform) #{ platform }
+              .dropdown
+                button#platformMenu.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true')
+                  | 平台 
+                  span.caret
+                ul.dropdown-menu(role='menu', aria-labelledby='platformMenu', data-stopPropagation='true')
+                  li(role='presentation')
+                    .row
+                      .col-lg-offset-2.col-lg-6
+                        each platform in platforms
+                          .checkbox
+                            label
+                              if (game && (game.platform.indexOf(platform) > -1))
+                                input(name='platform-' + platform, type='checkbox', checked='checked')
+                                | #{ platform }
+                              else
+                                input(name='platform-' + platform, type='checkbox')
+                                | #{ platform }
           .form-group
             label.control-label.col-lg-2(for='name') 名称
             .col-lg-4

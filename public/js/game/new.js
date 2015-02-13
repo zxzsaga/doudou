@@ -1,7 +1,11 @@
 $(document).ready(function() {
     $('#width').val($('.preview-container').width());
     $('#height').val($('.preview-container').height());
-    
+
+    $("ul.dropdown-menu").on("click", { 'data-stopPropagation': true }, function(e) {
+        e.stopPropagation(); // Stop closing memu
+    });
+
     listenImgUploadChange();
 });
 

@@ -15,7 +15,8 @@ GameRouter.use(appModules.filters.SessionFilter);
  */
 GameRouter.get('/new', function(req, res) {
     var params = {
-        platforms: Constants.GAME.PLATFORM
+        platforms: Constants.GAME.PLATFORM,
+        isNew: true
     };
     res.render('game/edit.jade', params);
 });
@@ -26,12 +27,26 @@ GameRouter.get('/new', function(req, res) {
 GameRouter.post('/create', function(req, res) {
     // 游戏基本信息
     var gameParams = {};
-    var gameFields = Game.getFieldsDefine();
+    var gameFields = {
+        name: true,
+        platform: true,
+        developer: true,
+        description: true
+    }; // Game.getFieldsDefine();
     for (var i in gameFields) {
         gameParams[i] = req.param(i);
     }
     gameParams.addedBy = req.session.user.id;
     gameParams.addedAt = Date.now();
+
+    gameParams.platform = [];
+    var platforms = Constants.GAME.PLATFORM;
+    platforms.forEach(function(platform) {
+        var platformIsChecked = req.param('platform-' + platform);
+        if (platformIsChecked) {
+            gameParams.platform.push(platform);
+        }
+    });
 
     // 封面裁剪信息
     var coverKeys = [ 'imgUrl', 'x1', 'y1', 'x2', 'y2' ];
@@ -332,11 +347,29 @@ GameRouter.get('/edit/:id', function(req, res) {
 });
 
 GameRouter.post('/update', function(req, res) {
+    // 游戏基本信息
     var gameParams = {};
-    var gameFields = Game.getFieldsDefine();
+    var gameFields = {
+        name: true,
+        platform: true,
+        developer: true,
+        description: true
+    }; // Game.getFieldsDefine();
     for (var i in gameFields) {
         gameParams[i] = req.param(i);
     }
+    gameParams.addedBy = req.session.user.id;
+    gameParams.addedAt = Date.now();
+
+    gameParams.platform = [];
+    var platforms = Constants.GAME.PLATFORM;
+    platforms.forEach(function(platform) {
+        var platformIsChecked = req.param('platform-' + platform);
+        if (platformIsChecked) {
+            gameParams.platform.push(platform);
+        }
+    });
+
     gameParams._id = req.param('gameId');
 
     // 封面裁剪信息
