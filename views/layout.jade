@@ -23,6 +23,11 @@ html
               a(href='#') Desktop game
         ui.nav.navbar-nav.navbar-right
           li
+            form.form-inline(action='/game/search', method='get', role='form')
+              .form-group
+                .col-lg-12(style='padding-top: 8px;')
+                  input.form-control(name='tag', type='text', placeholder='搜索标签')
+          li
             a(href='/game/new') Add Game
           li.dropdown
             a.dropdown-toggle(href='#', data-toggle='dropdown', aria-expanded='true') Account 

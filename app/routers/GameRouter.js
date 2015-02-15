@@ -484,3 +484,28 @@ GameRouter.post('/update', function(req, res) {
         });
     }
 });
+
+GameRouter.get('/search', function(req, res) {
+    var tag = req.param('tag');
+
+    var page = parseInt(req.param('page')) || 1;
+    var pageSize = 10;
+    Game.find({ tag: tag }).sort({ addedAt: -1 }).skip((page - 1) * pageSize).limit(pageSize).exec(function(err, games) {
+        if (err) {
+            logger.error(err);
+            res.send('find game error');
+            return;
+        }
+        games.forEach(function(game) {
+            game.coverUrl = '/' + game.coverUrl;
+        });
+        Game.count({}, function(err, gameCount) {
+            if (err) {
+                logger.error(err);
+                res.send('count game error');
+                return;
+            }
+            res.render('index.jade', { games: games, pageIndex: page, pageCount: Math.ceil(gameCount / pageSize) });
+        })
+    });
+});
