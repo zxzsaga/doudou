@@ -9,11 +9,11 @@ var fieldsDefine = {
         required: true
     },
     platform: Mixed,
-    tag: Array,
     coverUrl: String,
     // releaseDate: Date,
     developer: String,
     description: String,
+    tag: Array,
     addedBy: Number,
     addedAt: {
         type: Number,

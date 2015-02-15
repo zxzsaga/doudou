@@ -43,6 +43,11 @@ append body
             label.control-label.col-lg-2(for='developer') 开发者
             .col-lg-4
               input#developer.form-control(name='developer', type='text', value=game && game.developer, placeholder='选填')
+          .form-group
+            label.control-label.col-lg-2(for='tag') 标签
+            .col-lg-4
+              p.help-block 多个标签用空格隔开
+              input#tag.form-control(name='tag', type='text', value=game && game.tag)
           // .form-group
             label.control-label.col-lg-2(for='releaseDate') 发行日期
             .col-lg-4
