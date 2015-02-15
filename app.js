@@ -7,7 +7,6 @@ var util = require('util');
 // 第三方库
 var express    = require('express'), app = express(), router = express.Router;
 var glob       = require('glob');
-var im         = require('imagemagick');
 var log4js     = require('log4js'), logger = log4js.getLogger();
 var mongoose   = require('mongoose');
 var multiparty = require('multiparty');
@@ -45,6 +44,7 @@ for (var i in database) {
 }
 
 // 全局变量定义
+global.publicPath = publicPath;
 global.express    = express;
 global.logger     = logger;
 global.mongoose   = mongoose;
