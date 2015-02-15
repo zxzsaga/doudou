@@ -358,8 +358,6 @@ GameRouter.post('/update', function(req, res) {
     for (var i in gameFields) {
         gameParams[i] = req.param(i);
     }
-    gameParams.addedBy = req.session.user.id;
-    gameParams.addedAt = Date.now();
 
     gameParams.platform = [];
     var platforms = Constants.GAME.PLATFORM;
