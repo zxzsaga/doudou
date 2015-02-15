@@ -1,6 +1,6 @@
 $(document).ready(function() {
-    $('#width').val($('.preview-container').width());
-    $('#height').val($('.preview-container').height());
+    // $('#width').val($('.preview-container').width());
+    // $('#height').val($('.preview-container').height());
 
     $("ul.dropdown-menu").on("click", { 'data-stopPropagation': true }, function(e) {
         e.stopPropagation(); // Stop closing memu
@@ -45,16 +45,24 @@ function listenImgUploadChange() {
                 console.log(resp);
                 return;
             }
+
+            $('#' + id + '-img').css('height', 'auto');
+            $('#' + id + '-img-final').css('height', 'auto');
+
             $('#' + id + '-img').attr('src', resp.imgUrl);
             $('#' + id + '-img-final').attr('src', resp.imgUrl);
             $('#imgUrl').val(resp.imgUrl);
-            $('#width').val($('.preview-container').width());
-            $('#height').val($('.preview-container').height());
-            // 这里应该等待所有图片加载完成，偷了个懒
+            // $('#width').text($('.preview-container').width());
+            // $('#height').text($('.preview-container').height());
+            // TODO: 这里是否应该等待所有图片加载完成
             bindJcrop();
         }
 
         function bindJcrop() {
+            var oldJcropApi = $('#' + id + '-img').data('Jcrop');
+            if (oldJcropApi) {
+                oldJcropApi.destroy();
+            }
             $('#' + id + '-img').Jcrop({
                 onChange: updatePreview,
                 onSelect: updatePreview
@@ -65,18 +73,16 @@ function listenImgUploadChange() {
         }
 
         function updatePreview(cropInfo) {
-            /*
-              c: {
-                  x:
-                  x2:
-                  y:
-                  y2:
-                  h:
-                  w:
-              }
-            */
-            $previewImgWidth   = $('#' + id + '-img').width();
-            $previewImgHeight  = $('#' + id + '-img').height();
+            // c: {
+            //     x:
+            //     x2:
+            //     y:
+            //     y2:
+            //     h:
+            //     w:
+            // }
+            $previewImgWidth  = $('#' + id + '-img').width();
+            $previewImgHeight = $('#' + id + '-img').height();
 
             if (parseInt(cropInfo.w) > 0) {
                 var widthRatio = $previewContainerWidth / cropInfo.w;
@@ -96,8 +102,8 @@ function listenImgUploadChange() {
                 $('#y2').val(cropInfo.y2);
                 $('#w').val(cropInfo.w);
                 $('#h').val(cropInfo.h);
-                $('#width').val($('.preview-container').width());
-                $('#height').val($('.preview-container').height());
+                $('#width').text($('.preview-container').width());
+                $('#height').text($('.preview-container').height());
             }
         }
     });

@@ -59,18 +59,20 @@ append body
               p.help-block 请不要上传带有水印的图标。(不要拉得太长)
               .row
                 .col-lg-5
-                  img#cover-img(src=game && game.coverUrl, alt='cover-img', style='width: 128px')
+                  img#cover-img(src=game && game.coverUrl, style='width: 128px; height: 128px;')
                 .col-lg-7
                   .preview-panel
                     .preview-container(style='width: 128px; overflow: hidden')
-                      img#cover-img-final(alt='cover-img-final', style='width: 128px')
-                  .row
-                    .col-lg-4
-                      input#width.form-control(type='text', disabled)
-                    .col-lg-1
-                      p x
-                    .col-lg-4
-                      input#height.form-control(type='text', disabled)
+                      img#cover-img-final(style='width: 128px; height: 128px;')
+                    .row
+                      .col-lg-2
+                        p width
+                      .col-lg-2
+                        p#width
+                      .col-lg-2
+                        p height
+                      .col-lg-2
+                        p#height
               input#cover.imgUpload(type='file')
           input#gameId(name='gameId', type='hidden', value=game && game._id)
           input#imgUrl(name='imgUrl', type='hidden')
