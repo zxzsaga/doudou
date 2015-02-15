@@ -15,7 +15,8 @@ append body
                     p #{ game.name }
                   p 平台: #{ game.platform }
                   p 开发者: #{ game.developer }
-                  p 介绍: #{ game.description }
+                  if game.tag && game.tag.length
+                    p 标签: #{ game.tag }
     .row
       .col-lg-12
         nav.text-center

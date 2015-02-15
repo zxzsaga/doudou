@@ -39,6 +39,11 @@ GameRouter.post('/create', function(req, res) {
     gameParams.addedBy = req.session.user.id;
     gameParams.addedAt = Date.now();
 
+    var tag = req.param('tag');
+    if (tag) {
+        gameParams.tag = tag.split(' ');
+    }
+
     gameParams.platform = [];
     var platforms = Constants.GAME.PLATFORM;
     platforms.forEach(function(platform) {
@@ -334,8 +339,17 @@ GameRouter.get('/edit/:id', function(req, res) {
             res.send('find game error');
             return;
         }
+
         game.coverUrl = '/' + game.coverUrl;
         // game 表示这个 game 其 model 里的相关属性
+
+        if (game.tag instanceof Array) {
+            var tagsStr = '';
+            game.tag.forEach(function(singleTag) {
+                tagsStr += singleTag + ' ';
+            });
+            game.tag = tagsStr;
+        }
 
         var params = {
             platforms: Constants.GAME.PLATFORM,
@@ -357,6 +371,11 @@ GameRouter.post('/update', function(req, res) {
     }; // Game.getFieldsDefine();
     for (var i in gameFields) {
         gameParams[i] = req.param(i);
+    }
+
+    var tag = req.param('tag');
+    if (tag) {
+        gameParams.tag = tag.split(' ');
     }
 
     gameParams.platform = [];
