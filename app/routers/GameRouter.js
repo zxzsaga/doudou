@@ -1,11 +1,14 @@
 'use strict';
 
+var fs          = require('fs');
+var im          = require('imagemagick');
+
 var Game        = appModules.models.Game;
 var User        = appModules.models.User;
 var GameRating  = appModules.models.GameRating;
 var GameComment = appModules.models.GameComment;
 
-var GameRouter = module.exports = express.Router();
+var GameRouter  = module.exports = express.Router();
 
 // before filters
 GameRouter.use(appModules.filters.SessionFilter);
