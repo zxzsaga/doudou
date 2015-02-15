@@ -4,12 +4,22 @@ var Constants = {
     GAME: {
         PLATFORM: [
             'PC',
+            'Xbox ONE',
+            'Xbox 360',
             'PS4',
-            'Xbox',
+            'PS3',
+            'PS2',
+            'PS',
+            'PSVita',
             'PSP',
+            'GBA',
+            'NDS',
+            '3DS',
+            'Wii U',
             'Wii',
-            'FC',
-            'SFC',
+            'SNES',
+            'NES',
+            'Arcade',
             'Mobile'
         ]
     }
