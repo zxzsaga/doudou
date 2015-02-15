@@ -59,7 +59,10 @@ append body
               p.help-block 请不要上传带有水印的图标。(不要拉得太长)
               .row
                 .col-lg-5
-                  img#cover-img(src=game && game.coverUrl, style='width: 128px; height: 128px;')
+                  if (game && game.coverUrl)
+                    img#cover-img(src=game && game.coverUrl, style='width: 128px')
+                  else
+                    img#cover-img(style='width: 128px; height: 128px;')
                 .col-lg-7
                   .preview-panel
                     .preview-container(style='width: 128px; overflow: hidden')
