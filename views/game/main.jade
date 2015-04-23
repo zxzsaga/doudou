@@ -69,10 +69,15 @@ append body
         h3 #{ game.name } 的简介
         p #{ game.description }
     .row
-      .col-lg-12
-        h3 #{ game.name } 的短评 
+      .col-lg-8
+        h4 短评
+        hr
         each gameComment in gameComments
-          p #{ gameComment.commentedBy } 说: #{ gameComment.comment }
+          a.btn-link #{ gameComment.commentedBy }&nbsp
+          small #{ gameComment.commentedAt }
+          br
+          small #{ gameComment.comment }
+          hr
 
   #ratingModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='ratingModalLabel', aria-hidden='true')
     .modal-dialog
