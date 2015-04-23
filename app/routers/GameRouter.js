@@ -25,7 +25,14 @@ GameRouter.get('/new', function(req, res) {
 });
 
 /**
- * Add game
+ * @api {post} /game/create Create game
+ * @apiSampleRequest http://localhost:3000/game/create
+ * @apiName CreateGame
+ * @apiGroup Game
+ *
+ * @apiParam {String} name Game name.
+ * @apiParam {String} developer Game developer.
+ * @apiParam {String} description Game description.
  */
 GameRouter.post('/create', function(req, res) {
     // 游戏基本信息
@@ -260,6 +267,20 @@ GameRouter.get('/main/:id', function(req, res) {
     });
 });
 
+/**
+ * @api {post} /game/rating/:id Rating game
+ * @apiName RatingGame
+ * @apiGroup Game
+ *
+ * @apiParam {String} id Game id
+ * @apiParam {Number} overall Overall rating
+ * @apiParam {Number} presentation Presentation rating
+ * @apiParam {Number} graphics Graphics rating
+ * @apiParam {Number} sound Sound rating
+ * @apiParam {Number} gameplay GamePlay rating
+ * @apiParam {Number} lastingAppeal LastingAppeal rating
+ * @apiParam {String} comment Game comment
+ */
 GameRouter.post('/rating/:id', function(req, res) {
     var gameId = req.param('id');
     var userId = req.session.user.id;
