@@ -2,6 +2,7 @@
 
 var fs          = require('fs');
 var im          = require('imagemagick');
+var moment      = require('moment');
 
 var Game        = appModules.models.Game;
 var User        = appModules.models.User;
@@ -228,8 +229,10 @@ GameRouter.get('/main/:id', function(req, res) {
                     var gameCommentsToUser = [];
                     gameComments.forEach(function(gameComment) {
                         var gameCommentToUser = {
-                            commentedBy: userIdNameMap[gameComment.commentedBy],
-                            comment: gameComment.comment
+                            commenterId: gameComment.commentedBy,
+                            commenterName: userIdNameMap[gameComment.commentedBy],
+                            comment: gameComment.comment,
+                            commentedAt: moment(gameComment.createdAt).format('YYYY-MM-DD')
                         };
                         gameCommentsToUser.push(gameCommentToUser);
                     });

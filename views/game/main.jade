@@ -5,7 +5,7 @@ append head
   script(src='/js/game/main.js')
 
 append body
-  .container
+  .container(style='width: 960px;')
     h2 #{ game.name }
     .row
       .col-lg-8
@@ -15,11 +15,11 @@ append body
             br
             br
             a.btn.btn-default(href='/game/edit/' + game._id) 修改信息
-          .col-lg-5
+          .col-lg-4
             p 平台: #{ game.platform }
             p 开发者: #{ game.developer }
             // p 介绍: #{ game.description }
-          .col-lg-4
+          .col-lg-5
             form.form-horizontal(role='form')
               .form-group
                 label.col-lg-4.control-label(for="gameRating-overall") 总分
@@ -67,12 +67,17 @@ append body
     .row
       .col-lg-12
         h3 #{ game.name } 的简介
-        p #{ game.description }
+        pre #{ game.description }
     .row
-      .col-lg-12
-        h3 #{ game.name } 的短评 
+      .col-lg-8
+        h4 短评
+        hr
         each gameComment in gameComments
-          p #{ gameComment.commentedBy } 说: #{ gameComment.comment }
+          a.btn-link(href='/user/main/#{ gameComment.commenterId }') #{ gameComment.commenterName }&nbsp
+          small #{ gameComment.commentedAt }
+          br
+          small #{ gameComment.comment }
+          hr
 
   #ratingModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='ratingModalLabel', aria-hidden='true')
     .modal-dialog
