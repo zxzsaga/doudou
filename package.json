@@ -29,5 +29,9 @@
     "mongoose": "^3.8.21",
     "multiparty": "^4.1.0",
     "underscore": "^1.7.0"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-apidoc": "^0.10.0"
   }
 }

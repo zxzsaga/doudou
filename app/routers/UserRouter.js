@@ -39,6 +39,14 @@ UserRouter.get('/login', function(req, res) {
     res.render('login.jade');
 });
 
+/**
+ * @api {post} /login User login
+ * @apiName UserLogin
+ * @apiGroup User
+ *
+ * @apiParam {String} name User name
+ * @apiParam {String} pwd Password
+ */
 UserRouter.post('/login', function(req, res) {
     var userParams = {
         name: req.param('name'),
@@ -76,6 +84,15 @@ UserRouter.get('/logout', function(req, res) {
 UserRouter.get('/register', function(req, res) {
     res.render('register.jade');
 });
+
+/**
+ * @api {post} /register User register
+ * @apiName UserRegister
+ * @apiGroup User
+ *
+ * @apiParam {String} name User name
+ * @apiParam {String} pwd Password
+ */
 UserRouter.post('/register', function(req, res) {
     var userParams = {
         name: req.param('name'),
