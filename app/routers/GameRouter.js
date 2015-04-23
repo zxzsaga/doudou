@@ -229,7 +229,8 @@ GameRouter.get('/main/:id', function(req, res) {
                     var gameCommentsToUser = [];
                     gameComments.forEach(function(gameComment) {
                         var gameCommentToUser = {
-                            commentedBy: userIdNameMap[gameComment.commentedBy],
+                            commenterId: gameComment.commentedBy,
+                            commenterName: userIdNameMap[gameComment.commentedBy],
                             comment: gameComment.comment,
                             commentedAt: moment(gameComment.createdAt).format('YYYY-MM-DD')
                         };

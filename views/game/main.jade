@@ -73,7 +73,7 @@ append body
         h4 短评
         hr
         each gameComment in gameComments
-          a.btn-link #{ gameComment.commentedBy }&nbsp
+          a.btn-link(href='/user/main/#{ gameComment.commenterId }') #{ gameComment.commenterName }&nbsp
           small #{ gameComment.commentedAt }
           br
           small #{ gameComment.comment }

@@ -135,3 +135,15 @@ UserRouter.post('/register', function(req, res) {
         });
     });
 });
+
+UserRouter.get('/user/main/:id', function(req, res) {
+    var userId = req.param('id');
+    User.findOne({ _id: userId }, function(err, user) {
+        if (err) {
+            logger.error(err);
+            res.send('find game error');
+            return;
+        }
+        res.render('user/main.jade', { user: user });
+    });
+});
