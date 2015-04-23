@@ -526,13 +526,6 @@ GameRouter.get('/search', function(req, res) {
         games.forEach(function(game) {
             game.coverUrl = '/' + game.coverUrl;
         });
-        Game.count({}, function(err, gameCount) {
-            if (err) {
-                logger.error(err);
-                res.send('count game error');
-                return;
-            }
-            res.render('index.jade', { games: games, pageIndex: page, pageCount: Math.ceil(gameCount / pageSize) });
-        })
+        res.render('index.jade', { games: games, pageIndex: page, pageCount: Math.ceil(games.length / pageSize) });
     });
 });
