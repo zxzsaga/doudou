@@ -42,10 +42,14 @@ GameRouter.post('/create', function(req, res) {
         name: true,
         platform: true,
         developer: true,
-        description: true
+        description: true,
+        releaseDate: false
     }; // Game.getFieldsDefine();
     for (var i in gameFields) {
         gameParams[i] = req.param(i);
+        if (!gameParams[i]) { // TODO: strict check
+            delete gameParams[i];
+        }
     }
     gameParams.addedBy = req.session.user.id;
     gameParams.addedAt = Date.now();
@@ -394,10 +398,14 @@ GameRouter.post('/update', function(req, res) {
         name: true,
         platform: true,
         developer: true,
-        description: true
+        description: true,
+        releaseDate: false
     }; // Game.getFieldsDefine();
     for (var i in gameFields) {
         gameParams[i] = req.param(i);
+        if (!gameParams[i]) { // TODO: strict check
+            delete gameParams[i];
+        }
     }
 
     var tag = req.param('tag');

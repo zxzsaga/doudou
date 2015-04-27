@@ -5,7 +5,7 @@ var User        = appModules.models.User;
 var GameRating  = appModules.models.GameRating;
 var GameComment = appModules.models.GameComment;
 
-var UserRouter = module.exports = express.Router();
+var UserRouter  = module.exports = express.Router();
 
 // 登陆相关
 UserRouter.get('/', function(req, res) {

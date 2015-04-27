@@ -14,9 +14,13 @@ append body
                   a(href='/game/main/' + game._id)
                     p #{ game.name }
                   p 平台: #{ game.platform }
-                  p 开发者: #{ game.developer }
+                  if game.developer
+                    p 开发者: #{ game.developer }
+                  if game.releaseDate
+                    p 发型日期: #{ game.releaseDate }
+                  // 一方面有可能是字符串，另一方面有可能是数组
                   if game.tag && game.tag.length
-                    p 标签: #{ game.tag }
+                    p 类型: #{ game.tag }
     .row
       .col-lg-12
         nav.text-center
