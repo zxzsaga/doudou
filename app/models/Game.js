@@ -21,5 +21,4 @@ var fieldsDefine = {
     }
 };
 var Game = modelUtil.buildModel('Game', fieldsDefine, database.doudou);
-
 module.exports = Game;
