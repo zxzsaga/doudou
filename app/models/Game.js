@@ -10,7 +10,7 @@ var fieldsDefine = {
     },
     platform: Mixed,
     coverUrl: String,
-    // releaseDate: Date,
+    releaseDate: Date,
     developer: String,
     description: String,
     tag: Array,
@@ -21,5 +21,4 @@ var fieldsDefine = {
     }
 };
 var Game = modelUtil.buildModel('Game', fieldsDefine, database.doudou);
-
 module.exports = Game;

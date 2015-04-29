@@ -1,14 +1,26 @@
 'use strict';
 
-var modelUtil = appModules.util.modelUtil;
+var util = require('util');
 var ObjectId = mongoose.Schema.Types.ObjectId;
+var BaseSchema = appModules.models.BaseSchema;
 
-var fieldsDefine = {
+function Schema(definition, options) {
+    Schema.super_.call(this, definition, options);
+}
+util.inherits(Schema, BaseSchema);
+
+var definition = {
     gameId: ObjectId,
     reviewerId: ObjectId,
     review: String,
     createdAt: Date
 };
-var GameReview = modelUtil.buildModel('GameReview', fieldsDefine, database.doudou);
 
+var options = {
+    collection: 'GameReview'
+};
+
+var schema = new Schema(definition, options);
+
+var GameReview = database.doudou.model('GameReview', schema);
 module.exports = GameReview;

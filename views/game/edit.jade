@@ -42,21 +42,21 @@ append body
           .form-group
             label.control-label.col-lg-2(for='developer') 开发者
             .col-lg-4
-              input#developer.form-control(name='developer', type='text', value=game && game.developer, placeholder='选填')
+              input#developer.form-control(name='developer', type='text', value=game && game.developer)
           .form-group
             label.control-label.col-lg-2(for='tag') 标签
             .col-lg-4
-              p.help-block 多个标签用空格隔开
-              input#tag.form-control(name='tag', type='text', value=game && game.tag)
-          // .form-group
+              // p.help-block 多个标签用空格隔开
+              input#tag.form-control(name='tag', type='text', value=game && game.tag, placeholder='多个标签用空格隔开')
+          .form-group
             label.control-label.col-lg-2(for='releaseDate') 发行日期
             .col-lg-4
-              input#releaseDate.form-control(name='releaseDate', type='text', placeholder='选填')
+              input#releaseDate.form-control(name='releaseDate', type='text',value= game && game.releaseDate, placeholder='选填')
           .form-group
             label.control-label.col-lg-2(for='description') 介绍
             .col-lg-8
-              p.help-block 介绍是条目的完整说明，它可以帮助其他人快速了解这个游戏
-              textarea.form-control(name='description', rows='5')
+              // p.help-block 介绍是条目的完整说明，它可以帮助其他人快速了解这个游戏
+              textarea.form-control(name='description', rows='5', placeholder='介绍是条目的完整说明，它可以帮助其他人快速了解这个游戏')
                 | #{ game && game.description }
           .form-group
             label.control-label.col-lg-2(for='cover') 图标(必需)

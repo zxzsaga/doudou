@@ -1,8 +1,14 @@
 'use strict';
 
-var modelUtil = appModules.util.modelUtil;
+var util = require('util');
+var BaseSchema = appModules.models.BaseSchema;
 
-var fieldsDefine = {
+function Schema(definition, options) {
+    Schema.super_.call(this, definition, options);
+}
+util.inherits(Schema, BaseSchema);
+
+var definition = {
     _id: {
         type: Number,
         required: true
@@ -20,6 +26,12 @@ var fieldsDefine = {
         default: Date.now()
     }
 };
-var User = modelUtil.buildModel('User', fieldsDefine, database.doudou);
 
+var options = {
+    collection: 'User'
+};
+
+var schema = new Schema(definition, options);
+
+var User = database.doudou.model('User', schema);
 module.exports = User;

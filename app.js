@@ -25,8 +25,13 @@ app.use(express.static(publicPath));
 // app express 相关设置
 app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(cookieParser('secret'));
-app.use(session({ secret: 'keyboard cat' }));
-app.use(bodyParser());
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // 端口设置
 var nodePort = process.env.NODE_PORT || 80;

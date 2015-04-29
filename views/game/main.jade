@@ -16,8 +16,25 @@ append body
             br
             a.btn.btn-default(href='/game/edit/' + game._id) 修改信息
           .col-lg-4
-            p 平台: #{ game.platform }
-            p 开发者: #{ game.developer }
+            small
+              | 平台:
+              if Array.isArray(game.platfrom)
+                each platform, index in game.platform
+                  if index !== 0
+                    | &nbsp/
+                  | &nbsp#{ platform }
+              else
+                | &nbsp#{ game.platform }
+            br
+            small
+              | 开发者:
+              if Array.isArray(game.developer)
+                each developer, index in game.developer
+                  if index !== 0
+                    | &nbsp/
+                  | &nbsp#{ developer }
+              else
+                | &nbsp#{ game.developer }
             // p 介绍: #{ game.description }
           .col-lg-5
             form.form-horizontal(role='form')
