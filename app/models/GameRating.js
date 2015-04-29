@@ -1,9 +1,15 @@
 'use strict';
 
-var modelUtil = appModules.util.modelUtil;
+var util = require('util');
 var ObjectId = mongoose.Schema.Types.ObjectId;
+var BaseSchema = appModules.models.BaseSchema;
 
-var fieldsDefine = {
+function Schema(definition, options) {
+    Schema.super_.call(this, definition, options);
+}
+util.inherits(Schema, BaseSchema);
+
+var definition = {
     gameId: ObjectId,
     raterId: Number,
     rating: {
@@ -19,6 +25,12 @@ var fieldsDefine = {
         default: Date.now()
     }
 };
-var GameRating = modelUtil.buildModel('GameRating', fieldsDefine, database.doudou);
 
+var options = {
+    collections: 'GameRating'
+};
+
+var schema = new Schema(definition, options);
+
+var GameRating = database.doudou.model('GameRating', schema);
 module.exports = GameRating;

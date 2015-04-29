@@ -13,7 +13,7 @@ UserRouter.get('/', function(req, res) {
         res.render('login.jade');
         return;
     }
-    var page = parseInt(req.param('page')) || 1;
+    var page = parseInt(req.body.page) || 1;
     var pageSize = 10;
     Game.find().sort({ addedAt: -1 }).skip((page - 1) * pageSize).limit(pageSize).exec(function(err, games) {
         if (err) {
@@ -49,8 +49,8 @@ UserRouter.get('/login', function(req, res) {
  */
 UserRouter.post('/login', function(req, res) {
     var userParams = {
-        name: req.param('name'),
-        pwd: req.param('pwd')
+        name: req.body.name,
+        pwd: req.body.pwd
     };
     User.findOne(userParams, function(err, user) {
         if (err) {
@@ -95,8 +95,8 @@ UserRouter.get('/register', function(req, res) {
  */
 UserRouter.post('/register', function(req, res) {
     var userParams = {
-        name: req.param('name'),
-        pwd: req.param('pwd')
+        name: req.body.name,
+        pwd: req.body.pwd
     };
     User.findOne({ name: userParams.name }, function(err, user) {
         if (err) {
@@ -137,7 +137,7 @@ UserRouter.post('/register', function(req, res) {
 });
 
 UserRouter.get('/user/main/:id', function(req, res) {
-    var userId = req.param('id');
+    var userId = req.params.id;
     User.findOne({ _id: userId }, function(err, user) {
         if (err) {
             logger.error(err);

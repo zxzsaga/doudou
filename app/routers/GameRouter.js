@@ -46,7 +46,7 @@ GameRouter.post('/create', function(req, res) {
         releaseDate: false
     }; // Game.getFieldsDefine();
     for (var i in gameFields) {
-        gameParams[i] = req.param(i);
+        gameParams[i] = req.body[i];
         if (!gameParams[i]) { // TODO: strict check
             delete gameParams[i];
         }
@@ -54,7 +54,7 @@ GameRouter.post('/create', function(req, res) {
     gameParams.addedBy = req.session.user.id;
     gameParams.addedAt = Date.now();
 
-    var tag = req.param('tag');
+    var tag = req.body.tag;
     if (tag) {
         gameParams.tag = tag.split(' ');
     }
@@ -62,7 +62,7 @@ GameRouter.post('/create', function(req, res) {
     gameParams.platform = [];
     var platforms = Constants.GAME.PLATFORM;
     platforms.forEach(function(platform) {
-        var platformIsChecked = req.param('platform-' + platform);
+        var platformIsChecked = req.body['platform-' + platform];
         if (platformIsChecked) {
             gameParams.platform.push(platform);
         }
@@ -72,7 +72,7 @@ GameRouter.post('/create', function(req, res) {
     var coverKeys = [ 'imgUrl', 'x1', 'y1', 'x2', 'y2' ];
     var coverParams = {};
     coverKeys.forEach(function(key) {
-        coverParams[key] = req.param(key);
+        coverParams[key] = req.body[key];
     });
 
     if (!coverParams.imgUrl || coverParams.imgUrl === '') {
@@ -160,7 +160,7 @@ GameRouter.post('/create', function(req, res) {
 
 GameRouter.get('/main/:id', function(req, res) {
     // TODO 优化这个接口, 在用户点击评分的时候再查找自己对这个游戏的评分和评价
-    var gameId = req.param('id');
+    var gameId = req.params.id;
     var userId = req.session.user.id;
     Game.findOne({ _id: gameId }, function(err, game) {
         if (err) {
@@ -289,15 +289,15 @@ GameRouter.get('/main/:id', function(req, res) {
  * @apiParam {String} comment Game comment
  */
 GameRouter.post('/rating/:id', function(req, res) {
-    var gameId = req.param('id');
+    var gameId = req.params.id;
     var userId = req.session.user.id;
-    var overall = req.param('overall');
-    var presentation = req.param('presentation');
-    var graphics = req.param('graphics');
-    var sound = req.param('sound');
-    var gameplay = req.param('gameplay');
-    var lastingAppeal = req.param('lastingAppeal');
-    var comment = req.param('comment');
+    var overall = req.body.overall;
+    var presentation = req.body.presentation;
+    var graphics = req.body.graphics;
+    var sound = req.body.sound;
+    var gameplay = req.body.gameplay;
+    var lastingAppeal = req.body.lastingAppeal;
+    var comment = req.body.comment;
 
     GameRating.findOne({ gameId: gameId, raterId: userId }, function(err, gameRating) {
         if (err) {
@@ -355,7 +355,7 @@ GameRouter.post('/rating/:id', function(req, res) {
                         res.send('save gameComment error');
                         return;
                     }
-                    res.redirect('/game/main/' + req.param('id'));
+                    res.redirect('/game/main/' + gameId);
                 });
             });
         });
@@ -363,7 +363,7 @@ GameRouter.post('/rating/:id', function(req, res) {
 });
 
 GameRouter.get('/edit/:id', function(req, res) {
-    var gameId = req.param('id');
+    var gameId = req.params.id;
     Game.findOne({ _id: gameId }, function(err, game) {
         if (err) {
             logger.error(err);
@@ -402,13 +402,13 @@ GameRouter.post('/update', function(req, res) {
         releaseDate: false
     }; // Game.getFieldsDefine();
     for (var i in gameFields) {
-        gameParams[i] = req.param(i);
+        gameParams[i] = req.body[i];
         if (!gameParams[i]) { // TODO: strict check
             delete gameParams[i];
         }
     }
 
-    var tag = req.param('tag');
+    var tag = req.body.tag;
     if (tag) {
         gameParams.tag = tag.split(' ');
     }
@@ -416,19 +416,19 @@ GameRouter.post('/update', function(req, res) {
     gameParams.platform = [];
     var platforms = Constants.GAME.PLATFORM;
     platforms.forEach(function(platform) {
-        var platformIsChecked = req.param('platform-' + platform);
+        var platformIsChecked = req.body['platform-' + platform];
         if (platformIsChecked) {
             gameParams.platform.push(platform);
         }
     });
 
-    gameParams._id = req.param('gameId');
+    gameParams._id = req.body.gameId;
 
     // 封面裁剪信息
     var coverKeys = [ 'imgUrl', 'x1', 'y1', 'x2', 'y2' ];
     var coverParams = {};
     coverKeys.forEach(function(key) {
-        coverParams[key] = req.param(key);
+        coverParams[key] = req.body[key];
     });
 
     /*
@@ -521,9 +521,9 @@ GameRouter.post('/update', function(req, res) {
 });
 
 GameRouter.get('/search', function(req, res) {
-    var tag = req.param('tag');
+    var tag = req.body.tag;
 
-    var page = parseInt(req.param('page')) || 1;
+    var page = parseInt(req.body.page) || 1;
     var pageSize = 10;
     Game.find({ tag: tag }).sort({ addedAt: -1 }).skip((page - 1) * pageSize).limit(pageSize).exec(function(err, games) {
         if (err) {
