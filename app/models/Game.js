@@ -1,9 +1,15 @@
 'use strict';
 
-var modelUtil = appModules.util.modelUtil;
+var util = require('util');
 var Mixed = mongoose.Schema.Types.Mixed;
+var BaseSchema = appModules.models.BaseSchema;
 
-var fieldsDefine = {
+function Schema(definition, options) {
+    Schema.super_.call(this, definition, options);
+}
+util.inherits(Schema, BaseSchema);
+
+var definition = {
     name: {
         type: String,
         required: true
@@ -20,5 +26,12 @@ var fieldsDefine = {
         default: Date.now()
     }
 };
-var Game = modelUtil.buildModel('Game', fieldsDefine, database.doudou);
+
+var options = {
+    collection: 'Game'
+};
+
+var schema = new Schema(definition, options);
+
+var Game = database.doudou.model('Game', schema);
 module.exports = Game;
